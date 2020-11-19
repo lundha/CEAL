@@ -36,7 +36,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     composed = transforms.Compose([Convert2RGB(), Resize(64), ToTensor()])
         
     try:
-        dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=".bmp",
+        dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
                                     transform=composed)
     except Exception as e:
         print("Could not load dataset, error msg: ", str(e))
@@ -218,7 +218,7 @@ if __name__ == "__main__":
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
-    file_ending = ".bmp"
+    file_ending = ".jpg"
     model_name = "resnet152"
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
