@@ -119,8 +119,8 @@ def test(model, device, criterion, test_loader, log_file):
         balanced_accuracy += bacc
         '''
         _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        total += target.size(0)
+        correct += (predicted == target).sum().item()
     fh.close()
     return 100 * correct / total
         
