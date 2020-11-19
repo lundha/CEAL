@@ -74,7 +74,7 @@ def train(model, device, labeled_loader, optimizer, criterion):
         optimizer.step()
         
         # Add loss to the training set running loss
-        #train_loss += loss.item() * input.size(0)
+        train_loss += loss.item() * input.size(0)
         t1 = time.time()
     return train_loss
 
@@ -111,17 +111,17 @@ def test(model, device, criterion, test_loader, log_file):
         outputs = model(data.float())
         loss = criterion(outputs, target.squeeze(1).long())
         test_loss += loss.item() * data.size(0)
-        '''
+        
         acc, bacc, precision, recall, f1_score, rep = \
             METRIX(target.squeeze(1).long(), outputs)
         accuracy += acc
         balanced_accuracy += bacc
-        '''
+        
         _, predicted = torch.max(outputs.data, 1)
         total += target.size(0)
         correct += (predicted == target).sum().item()
 
-    return 100 * correct / total
+    return acc
         
 def run(device, net, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
@@ -160,8 +160,10 @@ def run(device, net, log_file, epochs, batch_size,
                                        sampler=unlabeled_sampler, shuffle=False)
         labeled_loader = DataLoader(train_set, batch_size=batch_size,
                                         sampler=labeled_sampler, shuffle=False)
+        
+        fh.write('len(labeled): {}\t len(unlabeled): {}\n'.
+                format(len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
-  
 
         acc_list = []
         balacc_list = []
@@ -172,7 +174,7 @@ def run(device, net, log_file, epochs, batch_size,
             # ---------- Train model -----------
             fh.write('***** Train *****\n')
             for epoch in range(1, epochs+1):
-                fh.write('\nepoch:\t{}\n'.format(epoch))
+                fh.write('epoch:\t{}\n'.format(epoch))
                 t0 = time.time()
                 train_loss = \
                     train(net, device, labeled_loader, optimizer, criterion)
@@ -192,13 +194,14 @@ def run(device, net, log_file, epochs, batch_size,
 
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
+            
+            # remove the uncertain samples from the unlabeled pool
+            for val in uncert_samp_idx:
+                unlabeled_loader.sampler.indices.remove(val)
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples\n'
                     'len(labeled): {}\t len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
-            # remove the uncertain samples from the unlabeled pool
-            for val in uncert_samp_idx:
-                unlabeled_loader.sampler.indices.remove(val)
 
             # ------------ Test model -------------
             fh.write('******* TEST *******\n')
