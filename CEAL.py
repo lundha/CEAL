@@ -153,7 +153,7 @@ def run(device, net, log_file, epochs, batch_size,
         indices = list(range(len(train_set)))
 
         # Shuffling dataset
-        np.random.shuffle(indices))
+        np.random.shuffle(indices)
 
         unlabeled_indices, labeled_indices = indices[split:], indices[:split]
         #unlabeled, labeled = random_split(train_set,[len(train_set) - split_size,split_size])
