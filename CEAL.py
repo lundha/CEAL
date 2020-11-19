@@ -133,10 +133,11 @@ def run(device, net, log_file, epochs, batch_size,
 
     # KFold validation
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
-    fh = open(log_file, 'a+')
 
     for train_index, test_index in kf.split(dataset):
         
+        fh = open(log_file, 'a+')
+
         train_set = Subset(dataset, train_index)
         test_set = Subset(dataset, test_index)
         print(len(train_set))
