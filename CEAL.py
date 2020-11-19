@@ -124,7 +124,7 @@ def test(model, device, criterion, test_loader, log_file):
     return accuracy, balanced_accuracy
         
 def run(device, net, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
 
     net = net.float() 
     criterion = nn.CrossEntropyLoss()
@@ -227,7 +227,8 @@ if __name__ == "__main__":
     batch_size = 64
     num_iter = 10
     criteria = "cl"
+    k = 400
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
     net = load_model(model_name, num_classes, log_file, size, device)
-    run(device, net, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria)
+    run(device, net, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k)
