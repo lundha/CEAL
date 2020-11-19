@@ -100,7 +100,7 @@ def test(model, device, criterion, test_loader, log_file):
     model.to(device)
     test_loss = 0
     total = 0
-    correcto = 0
+    correct = 0
     accuracy = 0
     balanced_accuracy = 0
     fh = open(log_file, 'a+')
