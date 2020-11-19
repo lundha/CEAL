@@ -32,8 +32,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
 
-    fh = open(log_file, 'a+')
-    fh.write('##### DATASET ######\n')
+    fh.write('***** Loading dataset *****\n')
 
     composed = transforms.Compose([Convert2RGB(), Resize(64), ToTensor()])
         
@@ -41,6 +40,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
                                     transform=composed)
     except Exception as e:
+        fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
 
     return dataset
@@ -103,8 +103,6 @@ def test(model, device, criterion, test_loader, log_file):
     correct = 0
     accuracy = 0
     balanced_accuracy = 0
-    fh = open(log_file, 'a+')
-    fh.write('******* TEST *******\n')
 
     for sample in test_loader:
         data, target = sample['image'], sample['label']
@@ -121,7 +119,7 @@ def test(model, device, criterion, test_loader, log_file):
         _, predicted = torch.max(outputs.data, 1)
         total += target.size(0)
         correct += (predicted == target).sum().item()
-    fh.close()
+
     return 100 * correct / total
         
 def run(device, net, log_file, epochs, batch_size,
@@ -140,21 +138,16 @@ def run(device, net, log_file, epochs, batch_size,
 
         train_set = Subset(dataset, train_index)
         test_set = Subset(dataset, test_index)
-        print(len(train_set))
-        print(len(test_set))
+
         #train_set, test_set = dataset[train_index], dataset[test_index]
-        fh.write('Split up data, cross validation')
-        fh.write('len(train): {}, len(test): {}'.format(len(train_set), len(test_set)))
+        fh.write('Split up data, cross validation\n')
+        fh.write('len(train): {}, len(test): {}\n'.format(len(train_set), len(test_set)))
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         
         # Define labeled and unlabeled data sets
-        print(len(train_set))
         split = int(len(train_set) * 0.10) # 10% initial labeled data 
         indices = list(range(len(train_set)))
-
-        # Shuffling dataset
-        # np.random.shuffle(indices)
 
         unlabeled_indices, labeled_indices = indices[split:], indices[:split]
         #unlabeled, labeled = random_split(train_set,[len(train_set) - split_size,split_size])
@@ -174,7 +167,7 @@ def run(device, net, log_file, epochs, batch_size,
         for iter in range(num_iter):
 
             # ---------- Train model -----------
-
+            fh.write('***** Train *****\n')
             for epoch in range(1, epochs+1):
                 fh.write('\nepoch:\t{}\n'.format(epoch))
                 t0 = time.time()
@@ -185,6 +178,7 @@ def run(device, net, log_file, epochs, batch_size,
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.6f}\n'.format(epoch,train_loss))
                 
             # ---------- Active learning -----
+            fh.write('***** Active learning *****\n')
             pred_prob = predict(net, device, unlabeled_loader, num_classes)
 
             # get k uncertain samples
@@ -196,24 +190,22 @@ def run(device, net, log_file, epochs, batch_size,
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
 
-            fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples'
-                    'in labeled dataset'
-                    'len(labeled): {}, len(unlabeled): {}'.
+            fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples\n'
+                    'len(labeled): {}\t len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
 
             # ------------ Test model -------------
-
-            # Perform test on model
+            fh.write('******* TEST *******\n')
             t0 = time.time()
             test_acc = test(net, device, criterion, test_loader, log_file)
             t1 = time.time()
-            fh.write('Testing time\t{} seconds\n'.format(t1-t0))
+            fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
                     'Fraction data: {:.3f}%\n'.format(test_acc,
-                            len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+                            100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
             
         fh.close()
 
@@ -240,6 +232,12 @@ if __name__ == "__main__":
     criteria = "cl"
     k = 400
 
+    fh = open(log_file, 'a+')
+    fh.write('**** New CEAL **** \n')
+    fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
+            'k: {}\t, criteria: {}\n'.format(device, model_name, num_classes, epochs, k, criteria))
+
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
     net = load_model(model_name, num_classes, log_file, size, device)
     run(device, net, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k)
+    fh.close()
