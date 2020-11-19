@@ -27,6 +27,8 @@ from samples_selection import get_uncertain_samples
 from criteria import least_confidence
 import sys
 import argparse
+from torch.utils.data.sampler import SubsetRandomSampler
+
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
 
@@ -147,13 +149,23 @@ def run(device, net, log_file, epochs, batch_size,
         
         # Define labeled and unlabeled data sets
         print(len(train_set))
-        split_size = int(len(train_set) * 0.10) # 10% initial labeled data 
+        split = int(len(train_set) * 0.10) # 10% initial labeled data 
         indices = list(range(len(train_set)))
 
-        unlabeled, labeled = random_split(train_set,[len(train_set) - split_size,split_size])
+        # Shuffling dataset
+        np.random.shuffle(indices))
 
-        unlabeled_loader = DataLoader(unlabeled, batch_size=batch_size, shuffle=True)
-        labeled_loader = DataLoader(labeled, batch_size=batch_size, shuffle=True)
+        unlabeled_indices, labeled_indices = indices[split:], indices[:split]
+        #unlabeled, labeled = random_split(train_set,[len(train_set) - split_size,split_size])
+        unlabeled_sampler = SubsetRandomSampler(unlabeled_indices)
+        labeled_sampler = SubsetRandomSampler(labeled_indices)
+
+        unlabeled_loader = DataLoader(unlabeled, batch_size=batch_size,
+                                       sampler=unlabeled_sampler, shuffle=True)
+        labeled_loader = DataLoader(labeled, batch_size=batch_size,
+                                        sampler=labeled_sampler, shuffle=True)
+
+  
 
         acc_list = []
         balacc_list = []
@@ -179,7 +191,7 @@ def run(device, net, log_file, epochs, batch_size,
                                                         criteria=criteria)
             # get original indices
             uncert_samp_idx = [unlabeled_loader.sampler.indices[idx] for idx in uncert_samp_idx]
-        
+
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
 
