@@ -161,9 +161,9 @@ def run(device, net, log_file, epochs, batch_size,
         labeled_sampler = SubsetRandomSampler(labeled_indices)
 
         unlabeled_loader = DataLoader(train_set, batch_size=batch_size,
-                                       sampler=unlabeled_sampler, shuffle=True)
+                                       sampler=unlabeled_sampler, shuffle=False)
         labeled_loader = DataLoader(train_set, batch_size=batch_size,
-                                        sampler=labeled_sampler, shuffle=True)
+                                        sampler=labeled_sampler, shuffle=False)
 
   
 
