@@ -146,6 +146,7 @@ def run(device, net, log_file, epochs, batch_size,
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         
+        fh.close()
         # Define labeled and unlabeled data sets
         split = int(len(train_set) * 0.10) # 10% initial labeled data 
         indices = list(range(len(train_set)))
@@ -166,6 +167,7 @@ def run(device, net, log_file, epochs, batch_size,
         balacc_list = []
 
         for iter in range(num_iter):
+            fh = open(log_file, 'a+')
 
             # ---------- Train model -----------
             fh.write('***** Train *****\n')
@@ -207,8 +209,7 @@ def run(device, net, log_file, epochs, batch_size,
             fh.write('Test acc:\t{:.3f}%\t'
                     'Fraction data: {:.3f}%\n'.format(test_acc,
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
-            
-        fh.close()
+            fh.close()
 
 if __name__ == "__main__":
 
@@ -237,8 +238,8 @@ if __name__ == "__main__":
     fh.write('**** New CEAL **** \n')
     fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
             'k: {}\t, criteria: {}\n'.format(device, model_name, num_classes, epochs, k, criteria))
+    fh.close()
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
     net = load_model(model_name, num_classes, log_file, size, device)
     run(device, net, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k)
-    fh.close()
