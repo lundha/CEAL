@@ -121,7 +121,7 @@ def test(model, device, criterion, test_loader, log_file):
         total += target.size(0)
         correct += (predicted == target).sum().item()
 
-    return acc
+    return accuracy
         
 def run(device, net, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
