@@ -99,6 +99,8 @@ def test(model, device, criterion, test_loader, log_file):
     model.eval()
     model.to(device)
     test_loss = 0
+    total = 0
+    correcto = 0
     accuracy = 0
     balanced_accuracy = 0
     fh = open(log_file, 'a+')
@@ -110,19 +112,17 @@ def test(model, device, criterion, test_loader, log_file):
         outputs = model(data.float())
         loss = criterion(outputs, target.squeeze(1).long())
         test_loss += loss.item() * data.size(0)
+        '''
         acc, bacc, precision, recall, f1_score, rep = \
             METRIX(target.squeeze(1).long(), outputs)
         accuracy += acc
         balanced_accuracy += bacc
-        # ----------------------
-        fh.write('Test Acc:\t{:.3f}%\tBalanced Acc.:\t{:.3f}%\tPrecision:\t{:.3f}%\t'
-              'Recall:\t{:.3f}%\tF1 Score:\t{:.3f}%\t\n'.format(acc * 100, bacc * 100, precision * 100,
-                                                          recall * 100, f1_score * 100))
-        fh.write('Report: \n{}\n'.format(rep))
-        # ----------------------
-
+        '''
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
     fh.close()
-    return accuracy, balanced_accuracy
+    return 100 * correct / total
         
 def run(device, net, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
@@ -198,7 +198,7 @@ def run(device, net, log_file, epochs, batch_size,
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples'
                     'in labeled dataset'
                     'len(labeled): {}, len(unlabeled): {}'.
-                    format(len(uncert_samp_idx),len(labeled_loader),len(unlabeled_loader)))
+                    format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
@@ -207,12 +207,11 @@ def run(device, net, log_file, epochs, batch_size,
 
             # Perform test on model
             t0 = time.time()
-            test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
+            test_acc = test(net, device, criterion, test_loader, log_file)
             t1 = time.time()
             fh.write('Testing time\t{} seconds\n'.format(t1-t0))
-            fh.write('Test acc:\t{:.3f}%\tbalance acc:\t{:.3f}%\t'
-                    'Fraction data: {:.3f}%\n'.format(test_acc*100 / len(test_loader),
-                            test_balacc*100 / len(test_loader),
+            fh.write('Test acc:\t{:.3f}%\t'
+                    'Fraction data: {:.3f}%\n'.format(test_acc,
                             len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
             
         fh.close()
@@ -236,7 +235,7 @@ if __name__ == "__main__":
     num_channels = 3
     epochs = 1 #10
     batch_size = 64
-    num_iter = 10
+    num_iter = 1
     criteria = "cl"
     k = 400
 
