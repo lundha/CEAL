@@ -220,7 +220,7 @@ if __name__ == "__main__":
     log_file = data_dir + "_run.log"
     file_ending = ".bmp"
     model_name = "resnet152"
-    num_classes = sys.argv[2] #7 # DYNAMIC
+    num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
     num_channels = 3
     epochs = 1 #10
