@@ -109,7 +109,7 @@ def test(model, device, criterion, test_loader, log_file):
         data, target = data.to(device), target.to(device)
         outputs = model(data.float())
         loss = criterion(outputs, target.squeeze(1).long())
-        test_loss += loss.item() * data.size()
+        test_loss += loss.item() * data.size(0)
         acc, bacc, precision, recall, f1_score, rep = \
             METRIX(target.squeeze(1).long(), outputs)
         accuracy += acc
