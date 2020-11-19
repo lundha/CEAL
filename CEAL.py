@@ -214,7 +214,7 @@ if __name__ == "__main__":
     # Define data directory and files for saving classes and data and log file
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
 
-    data_dir = sys.argv[1]    
+    data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
