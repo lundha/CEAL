@@ -146,7 +146,6 @@ def run(device, net, log_file, epochs, batch_size,
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         
-        fh.close()
         # Define labeled and unlabeled data sets
         split = int(len(train_set) * 0.10) # 10% initial labeled data 
         indices = list(range(len(train_set)))
@@ -163,6 +162,7 @@ def run(device, net, log_file, epochs, batch_size,
         
         fh.write('len(labeled): {}\t len(unlabeled): {}\n'.
                 format(len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
+        fh.close()
 
 
         acc_list = []
