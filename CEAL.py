@@ -87,7 +87,6 @@ def predict(model, device, unlabeled_loader, num_classes):
             data = sample['image']
             data = data.to(device)
             outputs = model(data.float())
-            print(outputs.shape)
             outputs = F.softmax(outputs)
             predict_results = np.concatenate(
                             (predict_results, outputs.cpu().numpy()))
