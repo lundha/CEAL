@@ -25,6 +25,8 @@ from dataloader import PlanktonDataSet, Resize, Normalization, ToTensor, Convert
 from nn_models import ResNet152
 from samples_selection import get_uncertain_samples
 from criteria import least_confidence
+import sys
+import argparse
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
 
@@ -210,13 +212,15 @@ if __name__ == "__main__":
     weight_decay = 0.0001
     start_lr = 0.001
     # Define data directory and files for saving classes and data and log file
-    data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
+    # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
+
+    data_dir = sys.argv[1]    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
     file_ending = ".bmp"
     model_name = "resnet152"
-    num_classes = 7 # DYNAMIC
+    num_classes = sys.argv[2] #7 # DYNAMIC
     size = 64
     num_channels = 3
     epochs = 1 #10
