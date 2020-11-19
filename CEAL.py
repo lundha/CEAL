@@ -31,7 +31,8 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
-
+    
+    fh = open(log_file, 'a+')
     fh.write('***** Loading dataset *****\n')
 
     composed = transforms.Compose([Convert2RGB(), Resize(64), ToTensor()])
@@ -42,7 +43,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     except Exception as e:
         fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
-
+    fh.close()
     return dataset
 
 
@@ -124,7 +125,7 @@ def test(model, device, criterion, test_loader, log_file):
         
 def run(device, net, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
-
+    
     net = net.float() 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
