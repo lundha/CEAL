@@ -172,7 +172,7 @@ def run(device, log_file, epochs, batch_size,
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
-            fh.write('** active learning iteration: {} / {} **'.format(iter, num_iter))
+            fh.write('\n** active learning iteration: {} / {} **\n'.format(iter, num_iter))
 
             # ---------- Train model ----------- #
             fh.write('***** Train *****\n')
@@ -181,9 +181,9 @@ def run(device, log_file, epochs, batch_size,
                 t0 = time.time()
                 train_loss = \
                     train(net, device, labeled_loader, optimizer, criterion)
-                fh.write('Total training time {} seconds\n'.format(time.time() - t0))
+                fh.write('Total training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
-                fh.write('Epoch:\t{}\tTraining Loss:\t{:.6f}\n'.format(epoch,train_loss))
+                fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
                 
             # ---------- Active learning ----- #
             fh.write('***** Active learning *****\n')
@@ -234,11 +234,11 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 5 #10
+    epochs = 10  # Add break when training loss stops decreasing 
     batch_size = 64
     num_iter = 10
     criteria = "cl"
-    k = 1000
+    k = 700
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New CEAL **** \n')
