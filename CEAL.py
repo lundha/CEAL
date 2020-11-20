@@ -123,13 +123,11 @@ def test(model, device, criterion, test_loader, log_file):
 
     return accuracy
         
-def run(device, net, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k):
+def run(device, log_file, epochs, batch_size,
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size):
     
-    net = net.float() 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
-
+    iteration = 0
     # KFold validation
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
 
@@ -137,15 +135,19 @@ def run(device, net, log_file, epochs, batch_size,
         
         fh = open(log_file, 'a+')
 
+        net = load_model(model_name, num_classes, log_file, size, device)
+        optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
+        net = net.float() 
+
         train_set = Subset(dataset, train_index)
         test_set = Subset(dataset, test_index)
 
         #train_set, test_set = dataset[train_index], dataset[test_index]
-        fh.write('Split up data, cross validation\n')
+        fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
         fh.write('len(train): {}, len(test): {}\n'.format(len(train_set), len(test_set)))
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
-        
+        iteration += 1
         # Define labeled and unlabeled data sets
         split = int(len(train_set) * 0.10) # 10% initial labeled data 
         indices = list(range(len(train_set)))
@@ -170,8 +172,9 @@ def run(device, net, log_file, epochs, batch_size,
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
+            fh.write('** active learning iteration: {} / {} **'.format(iter, num_iter))
 
-            # ---------- Train model -----------
+            # ---------- Train model ----------- #
             fh.write('***** Train *****\n')
             for epoch in range(1, epochs+1):
                 fh.write('epoch:\t{}\n'.format(epoch))
@@ -182,7 +185,7 @@ def run(device, net, log_file, epochs, batch_size,
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.6f}\n'.format(epoch,train_loss))
                 
-            # ---------- Active learning -----
+            # ---------- Active learning ----- #
             fh.write('***** Active learning *****\n')
             pred_prob = predict(net, device, unlabeled_loader, num_classes)
 
@@ -203,7 +206,7 @@ def run(device, net, log_file, epochs, batch_size,
                     'len(labeled): {}\t len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
-            # ------------ Test model -------------
+            # ------------ Test model ------------- #
             fh.write('******* TEST *******\n')
             t0 = time.time()
             test_acc = test(net, device, criterion, test_loader, log_file)
@@ -233,16 +236,15 @@ if __name__ == "__main__":
     num_channels = 3
     epochs = 5 #10
     batch_size = 64
-    num_iter = 5
+    num_iter = 10
     criteria = "cl"
-    k = 400
+    k = 1000
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New CEAL **** \n')
     fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
-            'k: {}\t, criteria: {}\n'.format(device, model_name, num_classes, epochs, k, criteria))
+            'k: {}\t, criteria: {}\t, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
     fh.close()
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    net = load_model(model_name, num_classes, log_file, size, device)
-    run(device, net, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k)
+    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size)
