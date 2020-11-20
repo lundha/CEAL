@@ -231,14 +231,14 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 1 #10
+    epochs = 5 #10
     batch_size = 64
-    num_iter = 1
+    num_iter = 5
     criteria = "cl"
     k = 400
 
     fh = open(log_file, 'a+')
-    fh.write('**** New CEAL **** \n')
+    fh.write('\n**** New CEAL **** \n')
     fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
             'k: {}\t, criteria: {}\n'.format(device, model_name, num_classes, epochs, k, criteria))
     fh.close()
