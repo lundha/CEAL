@@ -1,7 +1,16 @@
-
-
-## Load image to data frames
-
+###################
+# Pytorch neural network architecture
+# with active learning
+# Author: Martin Lund Haug
+# email: martinlhaug@gmail.com
+#
+# Date created: 18 november 2020
+# 
+# Project: AILARON
+#
+#
+# Copyright: @NTNU 2020
+####################
 import os
 import torch
 import pandas as pd
@@ -22,7 +31,7 @@ from metrics import METRIX
 from torch import nn
 from torch import optim
 from dataloader import PlanktonDataSet, Resize, Normalization, ToTensor, Convert2RGB
-from nn_models import ResNet152
+from nn_models import AlexNet, ResNet152
 from samples_selection import get_uncertain_samples
 from criteria import least_confidence
 import sys
@@ -47,9 +56,11 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     return dataset
 
 
-def load_model(model_name, num_classes, log_file, size, device):
+def load_model(model_name, num_classes, log_file, size, device, num_channels):
+    if model_name == "alexnet":
+        net = AlexNet(num_classes, device)
     if model_name == "resnet152":
-        net = ResNet152(num_classes, device)
+        net = AlexNet(num_classes, num_channels, device)
     print(net.model)
     return net.model    
 
@@ -124,7 +135,7 @@ def test(model, device, criterion, test_loader, log_file):
     return accuracy
         
 def run(device, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels):
     
     criterion = nn.CrossEntropyLoss()
     iteration = 0
@@ -135,7 +146,7 @@ def run(device, log_file, epochs, batch_size,
         
         fh = open(log_file, 'a+')
 
-        net = load_model(model_name, num_classes, log_file, size, device)
+        net = load_model(model_name, num_classes, log_file, size, device, num_channels)
         optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
         net = net.float() 
 
@@ -230,7 +241,7 @@ if __name__ == "__main__":
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
     file_ending = ".jpg"
-    model_name = "resnet152"
+    model_name = "alexnet"
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
     num_channels = 3
@@ -247,4 +258,4 @@ if __name__ == "__main__":
     fh.close()
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size)
+    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
