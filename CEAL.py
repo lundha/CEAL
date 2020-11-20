@@ -244,8 +244,8 @@ if __name__ == "__main__":
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
     file_ending = ".jpg"
-    model_name = "resnet152"
-    num_classes = int(sys.argv[2]) #7 # DYNAMIC
+    model_name = sys.argv[2]
+    num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
