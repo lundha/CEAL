@@ -53,6 +53,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
         fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
     fh.close()
+    fh.write('Len dataset: {}\n'.format(len(dataset)))
     return dataset
 
 
@@ -235,6 +236,7 @@ if __name__ == "__main__":
     start_lr = 0.001
     # Define data directory and files for saving classes and data and log file
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
+
 
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
