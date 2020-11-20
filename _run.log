@@ -1,0 +1,1953 @@
+
+**** New CEAL **** 
+INFO: Running on: cpu	 model name: resnet152	, classes: 121	, epochs: 10
+k: 700	, criteria: cl	, num iterations: 10
+***** Loading dataset *****
+
+Split up data, cross validation number: 0
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 4.09 seconds
+Epoch:	1	Training Loss:	0.3420
+epoch:	2
+Total training time 4.13 seconds
+Epoch:	2	Training Loss:	0.2100
+epoch:	3
+Total training time 4.14 seconds
+Epoch:	3	Training Loss:	0.1745
+epoch:	4
+Total training time 4.19 seconds
+Epoch:	4	Training Loss:	0.1580
+epoch:	5
+Total training time 4.36 seconds
+Epoch:	5	Training Loss:	0.1425
+epoch:	6
+Total training time 4.22 seconds
+Epoch:	6	Training Loss:	0.1326
+epoch:	7
+Total training time 4.08 seconds
+Epoch:	7	Training Loss:	0.1287
+epoch:	8
+Total training time 4.07 seconds
+Epoch:	8	Training Loss:	0.1273
+epoch:	9
+Total training time 4.07 seconds
+Epoch:	9	Training Loss:	0.1217
+epoch:	10
+Total training time 4.06 seconds
+Epoch:	10	Training Loss:	0.1173
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	10.389 seconds
+Test acc:	40.588%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 5.23 seconds
+Epoch:	1	Training Loss:	0.1979
+epoch:	2
+Total training time 5.23 seconds
+Epoch:	2	Training Loss:	0.1765
+epoch:	3
+Total training time 5.23 seconds
+Epoch:	3	Training Loss:	0.1641
+epoch:	4
+Total training time 5.24 seconds
+Epoch:	4	Training Loss:	0.1583
+epoch:	5
+Total training time 5.26 seconds
+Epoch:	5	Training Loss:	0.1567
+epoch:	6
+Total training time 5.25 seconds
+Epoch:	6	Training Loss:	0.1525
+epoch:	7
+Total training time 5.23 seconds
+Epoch:	7	Training Loss:	0.1518
+epoch:	8
+Total training time 5.24 seconds
+Epoch:	8	Training Loss:	0.1418
+epoch:	9
+Total training time 5.24 seconds
+Epoch:	9	Training Loss:	0.1374
+epoch:	10
+Total training time 5.24 seconds
+Epoch:	10	Training Loss:	0.1407
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3826	 len(unlabeled): 20442
+******* TEST *******
+Testing time	10.421 seconds
+Test acc:	44.009%	Fraction data: 15.766%
+
+** active learning iteration: 2 / 10 **
+***** Train *****
+epoch:	1
+Total training time 6.42 seconds
+Epoch:	1	Training Loss:	0.2265
+epoch:	2
+Total training time 6.42 seconds
+Epoch:	2	Training Loss:	0.2193
+epoch:	3
+Total training time 6.43 seconds
+Epoch:	3	Training Loss:	0.1963
+epoch:	4
+Total training time 6.43 seconds
+Epoch:	4	Training Loss:	0.1920
+epoch:	5
+Total training time 6.42 seconds
+Epoch:	5	Training Loss:	0.1949
+epoch:	6
+Total training time 6.43 seconds
+Epoch:	6	Training Loss:	0.1847
+epoch:	7
+Total training time 6.44 seconds
+Epoch:	7	Training Loss:	0.1856
+epoch:	8
+Total training time 6.43 seconds
+Epoch:	8	Training Loss:	0.1833
+epoch:	9
+Total training time 6.44 seconds
+Epoch:	9	Training Loss:	0.1772
+epoch:	10
+Total training time 6.45 seconds
+Epoch:	10	Training Loss:	0.1779
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 4526	 len(unlabeled): 19742
+******* TEST *******
+Testing time	10.432 seconds
+Test acc:	46.025%	Fraction data: 18.650%
+
+** active learning iteration: 3 / 10 **
+***** Train *****
+epoch:	1
+Total training time 7.65 seconds
+Epoch:	1	Training Loss:	0.2723
+epoch:	2
+Total training time 7.65 seconds
+Epoch:	2	Training Loss:	0.2494
+epoch:	3
+Total training time 7.64 seconds
+Epoch:	3	Training Loss:	0.2488
+epoch:	4
+Total training time 7.63 seconds
+Epoch:	4	Training Loss:	0.2428
+epoch:	5
+Total training time 7.65 seconds
+Epoch:	5	Training Loss:	0.2289
+epoch:	6
+Total training time 7.65 seconds
+Epoch:	6	Training Loss:	0.2275
+epoch:	7
+Total training time 7.64 seconds
+Epoch:	7	Training Loss:	0.2256
+epoch:	8
+Total training time 7.65 seconds
+Epoch:	8	Training Loss:	0.2230
+epoch:	9
+Total training time 7.65 seconds
+Epoch:	9	Training Loss:	0.2206
+epoch:	10
+Total training time 7.65 seconds
+Epoch:	10	Training Loss:	0.2152
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5226	 len(unlabeled): 19042
+******* TEST *******
+Testing time	10.516 seconds
+Test acc:	47.174%	Fraction data: 21.535%
+
+** active learning iteration: 4 / 10 **
+***** Train *****
+epoch:	1
+Total training time 8.83 seconds
+Epoch:	1	Training Loss:	0.3064
+epoch:	2
+Total training time 8.83 seconds
+Epoch:	2	Training Loss:	0.3113
+epoch:	3
+Total training time 8.83 seconds
+Epoch:	3	Training Loss:	0.2960
+epoch:	4
+Total training time 8.82 seconds
+Epoch:	4	Training Loss:	0.2745
+epoch:	5
+Total training time 8.85 seconds
+Epoch:	5	Training Loss:	0.2714
+epoch:	6
+Total training time 8.83 seconds
+Epoch:	6	Training Loss:	0.2775
+epoch:	7
+Total training time 8.87 seconds
+Epoch:	7	Training Loss:	0.2702
+epoch:	8
+Total training time 8.86 seconds
+Epoch:	8	Training Loss:	0.2711
+epoch:	9
+Total training time 8.86 seconds
+Epoch:	9	Training Loss:	0.2665
+epoch:	10
+Total training time 8.84 seconds
+Epoch:	10	Training Loss:	0.2521
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5926	 len(unlabeled): 18342
+******* TEST *******
+Testing time	10.457 seconds
+Test acc:	46.244%	Fraction data: 24.419%
+
+** active learning iteration: 5 / 10 **
+***** Train *****
+epoch:	1
+Total training time 10.04 seconds
+Epoch:	1	Training Loss:	0.3718
+epoch:	2
+Total training time 10.01 seconds
+Epoch:	2	Training Loss:	0.3480
+epoch:	3
+Total training time 10.02 seconds
+Epoch:	3	Training Loss:	0.3414
+epoch:	4
+Total training time 10.02 seconds
+Epoch:	4	Training Loss:	0.3209
+epoch:	5
+Total training time 10.01 seconds
+Epoch:	5	Training Loss:	0.3208
+epoch:	6
+Total training time 10.00 seconds
+Epoch:	6	Training Loss:	0.3183
+epoch:	7
+Total training time 10.01 seconds
+Epoch:	7	Training Loss:	0.3177
+epoch:	8
+Total training time 9.98 seconds
+Epoch:	8	Training Loss:	0.3008
+epoch:	9
+Total training time 9.98 seconds
+Epoch:	9	Training Loss:	0.3077
+epoch:	10
+Total training time 9.97 seconds
+Epoch:	10	Training Loss:	0.3059
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 6626	 len(unlabeled): 17642
+******* TEST *******
+Testing time	10.410 seconds
+Test acc:	47.041%	Fraction data: 27.303%
+
+** active learning iteration: 6 / 10 **
+***** Train *****
+epoch:	1
+Total training time 11.17 seconds
+Epoch:	1	Training Loss:	0.3998
+epoch:	2
+Total training time 11.16 seconds
+Epoch:	2	Training Loss:	0.3933
+epoch:	3
+Total training time 11.16 seconds
+Epoch:	3	Training Loss:	0.3879
+epoch:	4
+Total training time 11.18 seconds
+Epoch:	4	Training Loss:	0.3869
+epoch:	5
+Total training time 11.23 seconds
+Epoch:	5	Training Loss:	0.3585
+epoch:	6
+Total training time 11.23 seconds
+Epoch:	6	Training Loss:	0.3523
+epoch:	7
+Total training time 11.22 seconds
+Epoch:	7	Training Loss:	0.3543
+epoch:	8
+Total training time 11.25 seconds
+Epoch:	8	Training Loss:	0.3486
+epoch:	9
+Total training time 11.23 seconds
+Epoch:	9	Training Loss:	0.3500
+epoch:	10
+Total training time 11.25 seconds
+Epoch:	10	Training Loss:	0.3492
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 7326	 len(unlabeled): 16942
+******* TEST *******
+Testing time	10.449 seconds
+Test acc:	47.397%	Fraction data: 30.188%
+
+** active learning iteration: 7 / 10 **
+***** Train *****
+epoch:	1
+Total training time 12.43 seconds
+Epoch:	1	Training Loss:	0.4586
+epoch:	2
+Total training time 12.40 seconds
+Epoch:	2	Training Loss:	0.4434
+epoch:	3
+Total training time 12.42 seconds
+Epoch:	3	Training Loss:	0.4436
+epoch:	4
+Total training time 12.41 seconds
+Epoch:	4	Training Loss:	0.4310
+epoch:	5
+Total training time 12.42 seconds
+Epoch:	5	Training Loss:	0.4256
+epoch:	6
+Total training time 12.42 seconds
+Epoch:	6	Training Loss:	0.4137
+epoch:	7
+Total training time 12.43 seconds
+Epoch:	7	Training Loss:	0.3929
+epoch:	8
+Total training time 12.40 seconds
+Epoch:	8	Training Loss:	0.4051
+epoch:	9
+Total training time 12.42 seconds
+Epoch:	9	Training Loss:	0.4132
+epoch:	10
+Total training time 12.45 seconds
+Epoch:	10	Training Loss:	0.4152
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8026	 len(unlabeled): 16242
+******* TEST *******
+Testing time	10.423 seconds
+Test acc:	48.291%	Fraction data: 33.072%
+
+** active learning iteration: 8 / 10 **
+***** Train *****
+epoch:	1
+Total training time 13.58 seconds
+Epoch:	1	Training Loss:	0.4930
+epoch:	2
+Total training time 13.59 seconds
+Epoch:	2	Training Loss:	0.4729
+epoch:	3
+Total training time 13.62 seconds
+Epoch:	3	Training Loss:	0.4760
+epoch:	4
+Total training time 13.60 seconds
+Epoch:	4	Training Loss:	0.4801
+epoch:	5
+Total training time 13.60 seconds
+Epoch:	5	Training Loss:	0.4730
+epoch:	6
+Total training time 13.61 seconds
+Epoch:	6	Training Loss:	0.4551
+epoch:	7
+Total training time 13.60 seconds
+Epoch:	7	Training Loss:	0.4723
+epoch:	8
+Total training time 13.60 seconds
+Epoch:	8	Training Loss:	0.4566
+epoch:	9
+Total training time 13.62 seconds
+Epoch:	9	Training Loss:	0.4579
+epoch:	10
+Total training time 13.64 seconds
+Epoch:	10	Training Loss:	0.4487
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8726	 len(unlabeled): 15542
+******* TEST *******
+Testing time	10.456 seconds
+Test acc:	48.138%	Fraction data: 35.957%
+
+** active learning iteration: 9 / 10 **
+***** Train *****
+epoch:	1
+Total training time 14.86 seconds
+Epoch:	1	Training Loss:	0.5555
+epoch:	2
+Total training time 14.85 seconds
+Epoch:	2	Training Loss:	0.5353
+epoch:	3
+Total training time 14.80 seconds
+Epoch:	3	Training Loss:	0.5398
+epoch:	4
+Total training time 14.80 seconds
+Epoch:	4	Training Loss:	0.5200
+epoch:	5
+Total training time 14.77 seconds
+Epoch:	5	Training Loss:	0.5112
+epoch:	6
+Total training time 14.79 seconds
+Epoch:	6	Training Loss:	0.5282
+epoch:	7
+Total training time 14.81 seconds
+Epoch:	7	Training Loss:	0.5207
+epoch:	8
+Total training time 14.79 seconds
+Epoch:	8	Training Loss:	0.5043
+epoch:	9
+Total training time 14.80 seconds
+Epoch:	9	Training Loss:	0.5145
+epoch:	10
+Total training time 14.82 seconds
+Epoch:	10	Training Loss:	0.5016
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 9426	 len(unlabeled): 14842
+******* TEST *******
+Testing time	10.433 seconds
+Test acc:	47.909%	Fraction data: 38.841%
+
+Split up data, cross validation number: 1
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 4.08 seconds
+Epoch:	1	Training Loss:	0.3527
+epoch:	2
+Total training time 4.09 seconds
+Epoch:	2	Training Loss:	0.2021
+epoch:	3
+Total training time 4.09 seconds
+Epoch:	3	Training Loss:	0.1777
+epoch:	4
+Total training time 4.07 seconds
+Epoch:	4	Training Loss:	0.1585
+epoch:	5
+Total training time 4.08 seconds
+Epoch:	5	Training Loss:	0.1444
+epoch:	6
+Total training time 4.07 seconds
+Epoch:	6	Training Loss:	0.1369
+epoch:	7
+Total training time 4.08 seconds
+Epoch:	7	Training Loss:	0.1294
+epoch:	8
+Total training time 4.09 seconds
+Epoch:	8	Training Loss:	0.1235
+epoch:	9
+Total training time 4.09 seconds
+Epoch:	9	Training Loss:	0.1183
+epoch:	10
+Total training time 4.09 seconds
+Epoch:	10	Training Loss:	0.1180
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	10.462 seconds
+Test acc:	43.350%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 5.26 seconds
+Epoch:	1	Training Loss:	0.1948
+epoch:	2
+Total training time 5.27 seconds
+Epoch:	2	Training Loss:	0.1777
+epoch:	3
+Total training time 5.26 seconds
+Epoch:	3	Training Loss:	0.1703
+epoch:	4
+Total training time 5.25 seconds
+Epoch:	4	Training Loss:	0.1551
+epoch:	5
+Total training time 5.25 seconds
+Epoch:	5	Training Loss:	0.1566
+epoch:	6
+Total training time 5.24 seconds
+Epoch:	6	Training Loss:	0.1480
+epoch:	7
+Total training time 5.23 seconds
+Epoch:	7	Training Loss:	0.1450
+epoch:	8
+Total training time 5.24 seconds
+Epoch:	8	Training Loss:	0.1444
+epoch:	9
+Total training time 5.24 seconds
+Epoch:	9	Training Loss:	0.1437
+epoch:	10
+Total training time 5.25 seconds
+Epoch:	10	Training Loss:	0.1384
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3826	 len(unlabeled): 20442
+******* TEST *******
+Testing time	10.452 seconds
+Test acc:	44.744%	Fraction data: 15.766%
+
+** active learning iteration: 2 / 10 **
+***** Train *****
+epoch:	1
+Total training time 6.42 seconds
+Epoch:	1	Training Loss:	0.2294
+epoch:	2
+Total training time 6.41 seconds
+Epoch:	2	Training Loss:	0.2123
+epoch:	3
+Total training time 6.41 seconds
+Epoch:	3	Training Loss:	0.1968
+epoch:	4
+Total training time 6.41 seconds
+Epoch:	4	Training Loss:	0.1943
+epoch:	5
+Total training time 6.45 seconds
+Epoch:	5	Training Loss:	0.1836
+epoch:	6
+Total training time 6.42 seconds
+Epoch:	6	Training Loss:	0.1838
+epoch:	7
+Total training time 6.46 seconds
+Epoch:	7	Training Loss:	0.1744
+epoch:	8
+Total training time 6.44 seconds
+Epoch:	8	Training Loss:	0.1721
+epoch:	9
+Total training time 6.46 seconds
+Epoch:	9	Training Loss:	0.1725
+epoch:	10
+Total training time 6.47 seconds
+Epoch:	10	Training Loss:	0.1764
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 4526	 len(unlabeled): 19742
+******* TEST *******
+Testing time	10.439 seconds
+Test acc:	45.267%	Fraction data: 18.650%
+
+** active learning iteration: 3 / 10 **
+***** Train *****
+epoch:	1
+Total training time 7.64 seconds
+Epoch:	1	Training Loss:	0.2720
+epoch:	2
+Total training time 7.63 seconds
+Epoch:	2	Training Loss:	0.2507
+epoch:	3
+Total training time 7.64 seconds
+Epoch:	3	Training Loss:	0.2400
+epoch:	4
+Total training time 7.62 seconds
+Epoch:	4	Training Loss:	0.2336
+epoch:	5
+Total training time 7.62 seconds
+Epoch:	5	Training Loss:	0.2290
+epoch:	6
+Total training time 7.62 seconds
+Epoch:	6	Training Loss:	0.2275
+epoch:	7
+Total training time 7.62 seconds
+Epoch:	7	Training Loss:	0.2238
+epoch:	8
+Total training time 7.62 seconds
+Epoch:	8	Training Loss:	0.2135
+epoch:	9
+Total training time 7.63 seconds
+Epoch:	9	Training Loss:	0.2158
+epoch:	10
+Total training time 7.62 seconds
+Epoch:	10	Training Loss:	0.2046
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5226	 len(unlabeled): 19042
+******* TEST *******
+Testing time	10.445 seconds
+Test acc:	45.873%	Fraction data: 21.535%
+
+** active learning iteration: 4 / 10 **
+***** Train *****
+epoch:	1
+Total training time 8.82 seconds
+Epoch:	1	Training Loss:	0.3261
+epoch:	2
+Total training time 8.84 seconds
+Epoch:	2	Training Loss:	0.3108
+epoch:	3
+Total training time 8.83 seconds
+Epoch:	3	Training Loss:	0.2853
+epoch:	4
+Total training time 8.81 seconds
+Epoch:	4	Training Loss:	0.2741
+epoch:	5
+Total training time 8.82 seconds
+Epoch:	5	Training Loss:	0.2761
+epoch:	6
+Total training time 8.80 seconds
+Epoch:	6	Training Loss:	0.2717
+epoch:	7
+Total training time 8.82 seconds
+Epoch:	7	Training Loss:	0.2738
+epoch:	8
+Total training time 8.82 seconds
+Epoch:	8	Training Loss:	0.2717
+epoch:	9
+Total training time 8.83 seconds
+Epoch:	9	Training Loss:	0.2455
+epoch:	10
+Total training time 8.84 seconds
+Epoch:	10	Training Loss:	0.2577
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5926	 len(unlabeled): 18342
+******* TEST *******
+Testing time	10.460 seconds
+Test acc:	47.498%	Fraction data: 24.419%
+
+** active learning iteration: 5 / 10 **
+***** Train *****
+epoch:	1
+Total training time 10.03 seconds
+Epoch:	1	Training Loss:	0.3559
+epoch:	2
+Total training time 10.01 seconds
+Epoch:	2	Training Loss:	0.3313
+epoch:	3
+Total training time 10.01 seconds
+Epoch:	3	Training Loss:	0.3294
+epoch:	4
+Total training time 10.05 seconds
+Epoch:	4	Training Loss:	0.3294
+epoch:	5
+Total training time 10.04 seconds
+Epoch:	5	Training Loss:	0.3110
+epoch:	6
+Total training time 10.03 seconds
+Epoch:	6	Training Loss:	0.3139
+epoch:	7
+Total training time 10.04 seconds
+Epoch:	7	Training Loss:	0.3126
+epoch:	8
+Total training time 10.04 seconds
+Epoch:	8	Training Loss:	0.3101
+epoch:	9
+Total training time 10.05 seconds
+Epoch:	9	Training Loss:	0.2967
+epoch:	10
+Total training time 10.05 seconds
+Epoch:	10	Training Loss:	0.3058
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 6626	 len(unlabeled): 17642
+******* TEST *******
+Testing time	10.456 seconds
+Test acc:	49.119%	Fraction data: 27.303%
+
+** active learning iteration: 6 / 10 **
+***** Train *****
+epoch:	1
+Total training time 11.21 seconds
+Epoch:	1	Training Loss:	0.3934
+epoch:	2
+Total training time 11.22 seconds
+Epoch:	2	Training Loss:	0.3850
+epoch:	3
+Total training time 11.21 seconds
+Epoch:	3	Training Loss:	0.3710
+epoch:	4
+Total training time 11.22 seconds
+Epoch:	4	Training Loss:	0.3623
+epoch:	5
+Total training time 11.22 seconds
+Epoch:	5	Training Loss:	0.3737
+epoch:	6
+Total training time 11.21 seconds
+Epoch:	6	Training Loss:	0.3520
+epoch:	7
+Total training time 11.24 seconds
+Epoch:	7	Training Loss:	0.3556
+epoch:	8
+Total training time 11.21 seconds
+Epoch:	8	Training Loss:	0.3679
+epoch:	9
+Total training time 11.21 seconds
+Epoch:	9	Training Loss:	0.3500
+epoch:	10
+Total training time 11.20 seconds
+Epoch:	10	Training Loss:	0.3486
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 7326	 len(unlabeled): 16942
+******* TEST *******
+Testing time	10.466 seconds
+Test acc:	47.276%	Fraction data: 30.188%
+
+** active learning iteration: 7 / 10 **
+***** Train *****
+epoch:	1
+Total training time 12.44 seconds
+Epoch:	1	Training Loss:	0.4499
+epoch:	2
+Total training time 12.43 seconds
+Epoch:	2	Training Loss:	0.4269
+epoch:	3
+Total training time 12.44 seconds
+Epoch:	3	Training Loss:	0.4292
+epoch:	4
+Total training time 12.43 seconds
+Epoch:	4	Training Loss:	0.4176
+epoch:	5
+Total training time 12.44 seconds
+Epoch:	5	Training Loss:	0.4165
+epoch:	6
+Total training time 12.42 seconds
+Epoch:	6	Training Loss:	0.4137
+epoch:	7
+Total training time 12.44 seconds
+Epoch:	7	Training Loss:	0.4033
+epoch:	8
+Total training time 12.44 seconds
+Epoch:	8	Training Loss:	0.4017
+epoch:	9
+Total training time 12.43 seconds
+Epoch:	9	Training Loss:	0.4146
+epoch:	10
+Total training time 12.39 seconds
+Epoch:	10	Training Loss:	0.3921
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8026	 len(unlabeled): 16242
+******* TEST *******
+Testing time	10.452 seconds
+Test acc:	47.963%	Fraction data: 33.072%
+
+** active learning iteration: 8 / 10 **
+***** Train *****
+epoch:	1
+Total training time 13.57 seconds
+Epoch:	1	Training Loss:	0.5178
+epoch:	2
+Total training time 13.56 seconds
+Epoch:	2	Training Loss:	0.4867
+epoch:	3
+Total training time 13.58 seconds
+Epoch:	3	Training Loss:	0.4632
+epoch:	4
+Total training time 13.59 seconds
+Epoch:	4	Training Loss:	0.4638
+epoch:	5
+Total training time 13.59 seconds
+Epoch:	5	Training Loss:	0.4574
+epoch:	6
+Total training time 13.57 seconds
+Epoch:	6	Training Loss:	0.4601
+epoch:	7
+Total training time 13.64 seconds
+Epoch:	7	Training Loss:	0.4650
+epoch:	8
+Total training time 13.85 seconds
+Epoch:	8	Training Loss:	0.4567
+epoch:	9
+Total training time 13.79 seconds
+Epoch:	9	Training Loss:	0.4561
+epoch:	10
+Total training time 13.64 seconds
+Epoch:	10	Training Loss:	0.4420
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8726	 len(unlabeled): 15542
+******* TEST *******
+Testing time	10.548 seconds
+Test acc:	48.431%	Fraction data: 35.957%
+
+** active learning iteration: 9 / 10 **
+***** Train *****
+epoch:	1
+Total training time 14.87 seconds
+Epoch:	1	Training Loss:	0.5531
+epoch:	2
+Total training time 14.87 seconds
+Epoch:	2	Training Loss:	0.5429
+epoch:	3
+Total training time 14.94 seconds
+Epoch:	3	Training Loss:	0.5287
+epoch:	4
+Total training time 14.98 seconds
+Epoch:	4	Training Loss:	0.5214
+epoch:	5
+Total training time 14.88 seconds
+Epoch:	5	Training Loss:	0.5279
+epoch:	6
+Total training time 14.86 seconds
+Epoch:	6	Training Loss:	0.5072
+epoch:	7
+Total training time 14.82 seconds
+Epoch:	7	Training Loss:	0.5114
+epoch:	8
+Total training time 14.82 seconds
+Epoch:	8	Training Loss:	0.5091
+epoch:	9
+Total training time 14.82 seconds
+Epoch:	9	Training Loss:	0.5116
+epoch:	10
+Total training time 14.78 seconds
+Epoch:	10	Training Loss:	0.5028
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 9426	 len(unlabeled): 14842
+******* TEST *******
+Testing time	10.503 seconds
+Test acc:	47.592%	Fraction data: 38.841%
+
+Split up data, cross validation number: 2
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 4.12 seconds
+Epoch:	1	Training Loss:	0.3364
+epoch:	2
+Total training time 4.13 seconds
+Epoch:	2	Training Loss:	0.2038
+epoch:	3
+Total training time 4.12 seconds
+Epoch:	3	Training Loss:	0.1739
+epoch:	4
+Total training time 4.12 seconds
+Epoch:	4	Training Loss:	0.1581
+epoch:	5
+Total training time 4.13 seconds
+Epoch:	5	Training Loss:	0.1519
+epoch:	6
+Total training time 4.14 seconds
+Epoch:	6	Training Loss:	0.1375
+epoch:	7
+Total training time 4.14 seconds
+Epoch:	7	Training Loss:	0.1317
+epoch:	8
+Total training time 4.13 seconds
+Epoch:	8	Training Loss:	0.1273
+epoch:	9
+Total training time 4.18 seconds
+Epoch:	9	Training Loss:	0.1194
+epoch:	10
+Total training time 4.14 seconds
+Epoch:	10	Training Loss:	0.1115
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	11.370 seconds
+Test acc:	43.189%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 5.33 seconds
+Epoch:	1	Training Loss:	0.2053
+epoch:	2
+Total training time 5.32 seconds
+Epoch:	2	Training Loss:	0.1888
+epoch:	3
+Total training time 5.32 seconds
+Epoch:	3	Training Loss:	0.1765
+epoch:	4
+Total training time 5.36 seconds
+Epoch:	4	Training Loss:	0.1653
+epoch:	5
+Total training time 5.48 seconds
+Epoch:	5	Training Loss:	0.1594
+epoch:	6
+Total training time 5.45 seconds
+Epoch:	6	Training Loss:	0.1540
+epoch:	7
+Total training time 5.44 seconds
+Epoch:	7	Training Loss:	0.1468
+epoch:	8
+Total training time 5.55 seconds
+Epoch:	8	Training Loss:	0.1454
+epoch:	9
+Total training time 5.34 seconds
+Epoch:	9	Training Loss:	0.1411
+epoch:	10
+Total training time 5.32 seconds
+Epoch:	10	Training Loss:	0.1445
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3826	 len(unlabeled): 20442
+******* TEST *******
+Testing time	10.626 seconds
+Test acc:	44.596%	Fraction data: 15.766%
+
+** active learning iteration: 2 / 10 **
+***** Train *****
+epoch:	1
+Total training time 6.77 seconds
+Epoch:	1	Training Loss:	0.2307
+epoch:	2
+Total training time 6.63 seconds
+Epoch:	2	Training Loss:	0.2178
+epoch:	3
+Total training time 6.67 seconds
+Epoch:	3	Training Loss:	0.2070
+epoch:	4
+Total training time 6.65 seconds
+Epoch:	4	Training Loss:	0.1937
+epoch:	5
+Total training time 6.57 seconds
+Epoch:	5	Training Loss:	0.1900
+epoch:	6
+Total training time 6.57 seconds
+Epoch:	6	Training Loss:	0.1832
+epoch:	7
+Total training time 6.88 seconds
+Epoch:	7	Training Loss:	0.1774
+epoch:	8
+Total training time 6.62 seconds
+Epoch:	8	Training Loss:	0.1860
+epoch:	9
+Total training time 6.86 seconds
+Epoch:	9	Training Loss:	0.1789
+epoch:	10
+Total training time 6.55 seconds
+Epoch:	10	Training Loss:	0.1684
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 4526	 len(unlabeled): 19742
+******* TEST *******
+Testing time	10.373 seconds
+Test acc:	45.490%	Fraction data: 18.650%
+
+** active learning iteration: 3 / 10 **
+***** Train *****
+epoch:	1
+Total training time 7.91 seconds
+Epoch:	1	Training Loss:	0.2737
+epoch:	2
+Total training time 8.14 seconds
+Epoch:	2	Training Loss:	0.2583
+epoch:	3
+Total training time 7.97 seconds
+Epoch:	3	Training Loss:	0.2395
+epoch:	4
+Total training time 7.84 seconds
+Epoch:	4	Training Loss:	0.2315
+epoch:	5
+Total training time 8.22 seconds
+Epoch:	5	Training Loss:	0.2239
+epoch:	6
+Total training time 7.85 seconds
+Epoch:	6	Training Loss:	0.2321
+epoch:	7
+Total training time 7.95 seconds
+Epoch:	7	Training Loss:	0.2231
+epoch:	8
+Total training time 7.78 seconds
+Epoch:	8	Training Loss:	0.2098
+epoch:	9
+Total training time 7.90 seconds
+Epoch:	9	Training Loss:	0.2180
+epoch:	10
+Total training time 7.85 seconds
+Epoch:	10	Training Loss:	0.2168
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5226	 len(unlabeled): 19042
+******* TEST *******
+Testing time	10.863 seconds
+Test acc:	44.760%	Fraction data: 21.535%
+
+** active learning iteration: 4 / 10 **
+***** Train *****
+epoch:	1
+Total training time 9.62 seconds
+Epoch:	1	Training Loss:	0.3169
+epoch:	2
+Total training time 9.00 seconds
+Epoch:	2	Training Loss:	0.3058
+epoch:	3
+Total training time 9.73 seconds
+Epoch:	3	Training Loss:	0.2975
+epoch:	4
+Total training time 8.84 seconds
+Epoch:	4	Training Loss:	0.2855
+epoch:	5
+Total training time 8.84 seconds
+Epoch:	5	Training Loss:	0.2738
+epoch:	6
+Total training time 9.35 seconds
+Epoch:	6	Training Loss:	0.2685
+epoch:	7
+Total training time 9.15 seconds
+Epoch:	7	Training Loss:	0.2661
+epoch:	8
+Total training time 9.00 seconds
+Epoch:	8	Training Loss:	0.2650
+epoch:	9
+Total training time 9.01 seconds
+Epoch:	9	Training Loss:	0.2622
+epoch:	10
+Total training time 9.19 seconds
+Epoch:	10	Training Loss:	0.2812
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5926	 len(unlabeled): 18342
+******* TEST *******
+Testing time	10.379 seconds
+Test acc:	46.537%	Fraction data: 24.419%
+
+** active learning iteration: 5 / 10 **
+***** Train *****
+epoch:	1
+Total training time 10.03 seconds
+Epoch:	1	Training Loss:	0.3853
+epoch:	2
+Total training time 10.23 seconds
+Epoch:	2	Training Loss:	0.3491
+epoch:	3
+Total training time 10.10 seconds
+Epoch:	3	Training Loss:	0.3316
+epoch:	4
+Total training time 10.23 seconds
+Epoch:	4	Training Loss:	0.3321
+epoch:	5
+Total training time 10.20 seconds
+Epoch:	5	Training Loss:	0.3148
+epoch:	6
+Total training time 10.26 seconds
+Epoch:	6	Training Loss:	0.3204
+epoch:	7
+Total training time 10.08 seconds
+Epoch:	7	Training Loss:	0.3188
+epoch:	8
+Total training time 10.18 seconds
+Epoch:	8	Training Loss:	0.3214
+epoch:	9
+Total training time 10.06 seconds
+Epoch:	9	Training Loss:	0.3096
+epoch:	10
+Total training time 10.13 seconds
+Epoch:	10	Training Loss:	0.3028
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 6626	 len(unlabeled): 17642
+******* TEST *******
+Testing time	10.479 seconds
+Test acc:	45.635%	Fraction data: 27.303%
+
+** active learning iteration: 6 / 10 **
+***** Train *****
+epoch:	1
+Total training time 11.29 seconds
+Epoch:	1	Training Loss:	0.4238
+epoch:	2
+Total training time 11.55 seconds
+Epoch:	2	Training Loss:	0.3880
+epoch:	3
+Total training time 11.43 seconds
+Epoch:	3	Training Loss:	0.3838
+epoch:	4
+Total training time 11.47 seconds
+Epoch:	4	Training Loss:	0.3731
+epoch:	5
+Total training time 11.47 seconds
+Epoch:	5	Training Loss:	0.3684
+epoch:	6
+Total training time 11.42 seconds
+Epoch:	6	Training Loss:	0.3538
+epoch:	7
+Total training time 11.54 seconds
+Epoch:	7	Training Loss:	0.3525
+epoch:	8
+Total training time 11.44 seconds
+Epoch:	8	Training Loss:	0.3572
+epoch:	9
+Total training time 11.56 seconds
+Epoch:	9	Training Loss:	0.3623
+epoch:	10
+Total training time 13.13 seconds
+Epoch:	10	Training Loss:	0.3576
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 7326	 len(unlabeled): 16942
+******* TEST *******
+Testing time	10.801 seconds
+Test acc:	46.151%	Fraction data: 30.188%
+
+** active learning iteration: 7 / 10 **
+***** Train *****
+epoch:	1
+Total training time 13.97 seconds
+Epoch:	1	Training Loss:	0.4620
+epoch:	2
+Total training time 15.54 seconds
+Epoch:	2	Training Loss:	0.4406
+epoch:	3
+Total training time 14.90 seconds
+Epoch:	3	Training Loss:	0.4414
+epoch:	4
+Total training time 18.92 seconds
+Epoch:	4	Training Loss:	0.4298
+epoch:	5
+Total training time 22.42 seconds
+Epoch:	5	Training Loss:	0.4096
+epoch:	6
+Total training time 17.43 seconds
+Epoch:	6	Training Loss:	0.4148
+epoch:	7
+Total training time 17.95 seconds
+Epoch:	7	Training Loss:	0.4048
+epoch:	8
+Total training time 14.14 seconds
+Epoch:	8	Training Loss:	0.4109
+epoch:	9
+Total training time 14.36 seconds
+Epoch:	9	Training Loss:	0.3961
+epoch:	10
+Total training time 13.95 seconds
+Epoch:	10	Training Loss:	0.4042
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8026	 len(unlabeled): 16242
+******* TEST *******
+Testing time	14.529 seconds
+Test acc:	46.369%	Fraction data: 33.072%
+
+** active learning iteration: 8 / 10 **
+***** Train *****
+epoch:	1
+Total training time 19.72 seconds
+Epoch:	1	Training Loss:	0.5039
+epoch:	2
+Total training time 18.11 seconds
+Epoch:	2	Training Loss:	0.5067
+epoch:	3
+Total training time 17.96 seconds
+Epoch:	3	Training Loss:	0.4669
+epoch:	4
+Total training time 19.48 seconds
+Epoch:	4	Training Loss:	0.4694
+epoch:	5
+Total training time 19.11 seconds
+Epoch:	5	Training Loss:	0.4672
+epoch:	6
+Total training time 20.68 seconds
+Epoch:	6	Training Loss:	0.4611
+epoch:	7
+Total training time 21.65 seconds
+Epoch:	7	Training Loss:	0.4419
+epoch:	8
+Total training time 20.77 seconds
+Epoch:	8	Training Loss:	0.4500
+epoch:	9
+Total training time 20.36 seconds
+Epoch:	9	Training Loss:	0.4430
+epoch:	10
+Total training time 17.65 seconds
+Epoch:	10	Training Loss:	0.4505
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8726	 len(unlabeled): 15542
+******* TEST *******
+Testing time	10.572 seconds
+Test acc:	47.834%	Fraction data: 35.957%
+
+** active learning iteration: 9 / 10 **
+***** Train *****
+epoch:	1
+Total training time 15.15 seconds
+Epoch:	1	Training Loss:	0.5665
+epoch:	2
+Total training time 15.18 seconds
+Epoch:	2	Training Loss:	0.5524
+epoch:	3
+Total training time 15.21 seconds
+Epoch:	3	Training Loss:	0.5400
+epoch:	4
+Total training time 15.15 seconds
+Epoch:	4	Training Loss:	0.5374
+epoch:	5
+Total training time 14.85 seconds
+Epoch:	5	Training Loss:	0.5212
+epoch:	6
+Total training time 14.96 seconds
+Epoch:	6	Training Loss:	0.5247
+epoch:	7
+Total training time 14.89 seconds
+Epoch:	7	Training Loss:	0.5123
+epoch:	8
+Total training time 15.50 seconds
+Epoch:	8	Training Loss:	0.5038
+epoch:	9
+Total training time 15.18 seconds
+Epoch:	9	Training Loss:	0.5007
+epoch:	10
+Total training time 15.32 seconds
+Epoch:	10	Training Loss:	0.4976
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 9426	 len(unlabeled): 14842
+******* TEST *******
+Testing time	10.343 seconds
+Test acc:	47.549%	Fraction data: 38.841%
+
+Split up data, cross validation number: 3
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 4.07 seconds
+Epoch:	1	Training Loss:	0.3327
+epoch:	2
+Total training time 4.08 seconds
+Epoch:	2	Training Loss:	0.2048
+epoch:	3
+Total training time 4.07 seconds
+Epoch:	3	Training Loss:	0.1798
+epoch:	4
+Total training time 4.06 seconds
+Epoch:	4	Training Loss:	0.1622
+epoch:	5
+Total training time 4.06 seconds
+Epoch:	5	Training Loss:	0.1474
+epoch:	6
+Total training time 4.06 seconds
+Epoch:	6	Training Loss:	0.1362
+epoch:	7
+Total training time 4.06 seconds
+Epoch:	7	Training Loss:	0.1304
+epoch:	8
+Total training time 4.06 seconds
+Epoch:	8	Training Loss:	0.1246
+epoch:	9
+Total training time 4.07 seconds
+Epoch:	9	Training Loss:	0.1175
+epoch:	10
+Total training time 4.57 seconds
+Epoch:	10	Training Loss:	0.1172
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	13.333 seconds
+Test acc:	43.424%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 6.34 seconds
+Epoch:	1	Training Loss:	0.1957
+epoch:	2
+Total training time 5.77 seconds
+Epoch:	2	Training Loss:	0.1782
+epoch:	3
+Total training time 6.08 seconds
+Epoch:	3	Training Loss:	0.1702
+epoch:	4
+Total training time 7.54 seconds
+Epoch:	4	Training Loss:	0.1613
+epoch:	5
+Total training time 8.45 seconds
+Epoch:	5	Training Loss:	0.1597
+epoch:	6
+Total training time 8.77 seconds
+Epoch:	6	Training Loss:	0.1538
+epoch:	7
+Total training time 9.11 seconds
+Epoch:	7	Training Loss:	0.1508
+epoch:	8
+Total training time 9.15 seconds
+Epoch:	8	Training Loss:	0.1497
+epoch:	9
+Total training time 8.75 seconds
+Epoch:	9	Training Loss:	0.1431
+epoch:	10
+
+**** New CEAL **** 
+INFO: Running on: cpu	 model name: alexnet	, classes: 121	, epochs: 10
+k: 700	, criteria: cl	, num iterations: 10
+***** Loading dataset *****
+
+Split up data, cross validation number: 0
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 16.89 seconds
+Epoch:	1	Training Loss:	0.4578
+epoch:	2
+Total training time 14.77 seconds
+Epoch:	2	Training Loss:	0.4391
+epoch:	3
+Total training time 15.02 seconds
+Epoch:	3	Training Loss:	0.4230
+epoch:	4
+Total training time 14.47 seconds
+Epoch:	4	Training Loss:	0.3996
+epoch:	5
+Total training time 14.95 seconds
+Epoch:	5	Training Loss:	0.3542
+epoch:	6
+Total training time 15.40 seconds
+Epoch:	6	Training Loss:	0.3268
+epoch:	7
+Total training time 14.98 seconds
+Epoch:	7	Training Loss:	0.2917
+epoch:	8
+Total training time 14.65 seconds
+Epoch:	8	Training Loss:	0.2700
+epoch:	9
+Total training time 14.54 seconds
+Epoch:	9	Training Loss:	0.2565
+epoch:	10
+Total training time 14.53 seconds
+Epoch:	10	Training Loss:	0.2440
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	11.735 seconds
+Test acc:	31.407%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 21.09 seconds
+Epoch:	1	Training Loss:	0.3039
+epoch:	2
+Total training time 21.22 seconds
+Epoch:	2	Training Loss:	0.2833
+epoch:	3
+Total training time 20.79 seconds
+Epoch:	3	Training Loss:	0.2736
+epoch:	4
+Total training time 20.61 seconds
+Epoch:	4	Training Loss:	0.2646
+epoch:	5
+Total training time 20.39 seconds
+Epoch:	5	Training Loss:	0.2531
+epoch:	6
+Total training time 20.42 seconds
+Epoch:	6	Training Loss:	0.2429
+epoch:	7
+Total training time 20.41 seconds
+Epoch:	7	Training Loss:	0.2345
+epoch:	8
+Total training time 20.39 seconds
+Epoch:	8	Training Loss:	0.2257
+epoch:	9
+Total training time 20.38 seconds
+Epoch:	9	Training Loss:	0.2089
+epoch:	10
+Total training time 20.33 seconds
+Epoch:	10	Training Loss:	0.2089
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3826	 len(unlabeled): 20442
+******* TEST *******
+Testing time	11.161 seconds
+Test acc:	38.661%	Fraction data: 15.766%
+
+** active learning iteration: 2 / 10 **
+***** Train *****
+epoch:	1
+Total training time 24.89 seconds
+Epoch:	1	Training Loss:	0.2816
+epoch:	2
+Total training time 24.97 seconds
+Epoch:	2	Training Loss:	0.2574
+epoch:	3
+Total training time 25.05 seconds
+Epoch:	3	Training Loss:	0.2428
+epoch:	4
+Total training time 25.10 seconds
+Epoch:	4	Training Loss:	0.2388
+epoch:	5
+Total training time 26.70 seconds
+Epoch:	5	Training Loss:	0.2279
+epoch:	6
+Total training time 25.04 seconds
+Epoch:	6	Training Loss:	0.2246
+epoch:	7
+Total training time 25.26 seconds
+Epoch:	7	Training Loss:	0.1978
+epoch:	8
+Total training time 25.28 seconds
+Epoch:	8	Training Loss:	0.2049
+epoch:	9
+Total training time 25.58 seconds
+Epoch:	9	Training Loss:	0.1855
+epoch:	10
+Total training time 25.76 seconds
+Epoch:	10	Training Loss:	0.1918
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 4526	 len(unlabeled): 19742
+******* TEST *******
+Testing time	10.970 seconds
+Test acc:	43.467%	Fraction data: 18.650%
+
+** active learning iteration: 3 / 10 **
+***** Train *****
+epoch:	1
+Total training time 30.93 seconds
+Epoch:	1	Training Loss:	0.2547
+epoch:	2
+Total training time 31.60 seconds
+Epoch:	2	Training Loss:	0.2333
+epoch:	3
+Total training time 32.44 seconds
+Epoch:	3	Training Loss:	0.2065
+epoch:	4
+Total training time 32.81 seconds
+Epoch:	4	Training Loss:	0.1920
+epoch:	5
+Total training time 33.08 seconds
+Epoch:	5	Training Loss:	0.1919
+epoch:	6
+Total training time 33.10 seconds
+Epoch:	6	Training Loss:	0.1852
+epoch:	7
+Total training time 33.30 seconds
+Epoch:	7	Training Loss:	0.1828
+epoch:	8
+Total training time 33.26 seconds
+Epoch:	8	Training Loss:	0.1834
+epoch:	9
+Total training time 33.44 seconds
+Epoch:	9	Training Loss:	0.1695
+epoch:	10
+Total training time 33.42 seconds
+Epoch:	10	Training Loss:	0.1511
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5226	 len(unlabeled): 19042
+******* TEST *******
+Testing time	13.378 seconds
+Test acc:	46.471%	Fraction data: 21.535%
+
+** active learning iteration: 4 / 10 **
+***** Train *****
+epoch:	1
+Total training time 38.30 seconds
+Epoch:	1	Training Loss:	0.2452
+epoch:	2
+Total training time 38.35 seconds
+Epoch:	2	Training Loss:	0.2081
+epoch:	3
+Total training time 38.56 seconds
+Epoch:	3	Training Loss:	0.1807
+epoch:	4
+Total training time 38.45 seconds
+Epoch:	4	Training Loss:	0.1862
+epoch:	5
+Total training time 38.85 seconds
+Epoch:	5	Training Loss:	0.1756
+epoch:	6
+Total training time 38.69 seconds
+Epoch:	6	Training Loss:	0.1795
+epoch:	7
+Total training time 38.73 seconds
+Epoch:	7	Training Loss:	0.1650
+epoch:	8
+Total training time 38.67 seconds
+Epoch:	8	Training Loss:	0.1630
+epoch:	9
+Total training time 38.72 seconds
+Epoch:	9	Training Loss:	0.1581
+epoch:	10
+Total training time 38.61 seconds
+Epoch:	10	Training Loss:	0.1452
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5926	 len(unlabeled): 18342
+******* TEST *******
+Testing time	13.816 seconds
+Test acc:	46.131%	Fraction data: 24.419%
+
+** active learning iteration: 5 / 10 **
+***** Train *****
+epoch:	1
+Total training time 43.94 seconds
+Epoch:	1	Training Loss:	0.2337
+epoch:	2
+Total training time 43.96 seconds
+Epoch:	2	Training Loss:	0.1881
+epoch:	3
+Total training time 44.31 seconds
+Epoch:	3	Training Loss:	0.2068
+epoch:	4
+Total training time 44.18 seconds
+Epoch:	4	Training Loss:	0.1774
+epoch:	5
+Total training time 44.32 seconds
+Epoch:	5	Training Loss:	0.1633
+epoch:	6
+Total training time 44.46 seconds
+Epoch:	6	Training Loss:	0.1578
+epoch:	7
+Total training time 44.52 seconds
+Epoch:	7	Training Loss:	0.1531
+epoch:	8
+Total training time 44.59 seconds
+Epoch:	8	Training Loss:	0.1403
+epoch:	9
+Total training time 44.89 seconds
+Epoch:	9	Training Loss:	0.1525
+epoch:	10
+Total training time 45.01 seconds
+Epoch:	10	Training Loss:	0.1423
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 6626	 len(unlabeled): 17642
+******* TEST *******
+Testing time	13.585 seconds
+Test acc:	48.166%	Fraction data: 27.303%
+
+** active learning iteration: 6 / 10 **
+***** Train *****
+epoch:	1
+Total training time 49.96 seconds
+Epoch:	1	Training Loss:	0.2342
+epoch:	2
+Total training time 50.23 seconds
+Epoch:	2	Training Loss:	0.1971
+epoch:	3
+Total training time 50.12 seconds
+Epoch:	3	Training Loss:	0.1721
+epoch:	4
+Total training time 50.22 seconds
+Epoch:	4	Training Loss:	0.1657
+epoch:	5
+Total training time 50.38 seconds
+Epoch:	5	Training Loss:	0.1626
+epoch:	6
+Total training time 50.70 seconds
+Epoch:	6	Training Loss:	0.1661
+epoch:	7
+Total training time 51.00 seconds
+Epoch:	7	Training Loss:	0.1595
+epoch:	8
+Total training time 50.69 seconds
+Epoch:	8	Training Loss:	0.1541
+epoch:	9
+Total training time 50.30 seconds
+Epoch:	9	Training Loss:	0.1479
+epoch:	10
+Total training time 50.53 seconds
+Epoch:	10	Training Loss:	0.1353
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 7326	 len(unlabeled): 16942
+******* TEST *******
+Testing time	14.237 seconds
+Test acc:	48.764%	Fraction data: 30.188%
+
+** active learning iteration: 7 / 10 **
+***** Train *****
+epoch:	1
+Total training time 56.18 seconds
+Epoch:	1	Training Loss:	0.2414
+epoch:	2
+Total training time 56.21 seconds
+Epoch:	2	Training Loss:	0.1971
+epoch:	3
+Total training time 56.97 seconds
+Epoch:	3	Training Loss:	0.1947
+epoch:	4
+Total training time 59.82 seconds
+Epoch:	4	Training Loss:	0.1734
+epoch:	5
+Total training time 57.88 seconds
+Epoch:	5	Training Loss:	0.1647
+epoch:	6
+Total training time 58.75 seconds
+Epoch:	6	Training Loss:	0.1347
+epoch:	7
+Total training time 64.40 seconds
+Epoch:	7	Training Loss:	0.1637
+epoch:	8
+Total training time 79.52 seconds
+Epoch:	8	Training Loss:	0.1631
+epoch:	9
+Total training time 77.52 seconds
+Epoch:	9	Training Loss:	0.1510
+epoch:	10
+Total training time 61.21 seconds
+Epoch:	10	Training Loss:	0.1485
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8026	 len(unlabeled): 16242
+******* TEST *******
+Testing time	15.081 seconds
+Test acc:	48.787%	Fraction data: 33.072%
+
+** active learning iteration: 8 / 10 **
+***** Train *****
+epoch:	1
+Total training time 64.03 seconds
+Epoch:	1	Training Loss:	0.2318
+epoch:	2
+Total training time 64.09 seconds
+Epoch:	2	Training Loss:	0.1928
+epoch:	3
+Total training time 64.05 seconds
+Epoch:	3	Training Loss:	0.2003
+epoch:	4
+Total training time 65.07 seconds
+Epoch:	4	Training Loss:	0.1876
+epoch:	5
+Total training time 65.44 seconds
+Epoch:	5	Training Loss:	0.1831
+epoch:	6
+Total training time 64.38 seconds
+Epoch:	6	Training Loss:	0.1802
+epoch:	7
+Total training time 63.74 seconds
+Epoch:	7	Training Loss:	0.1660
+epoch:	8
+Total training time 63.79 seconds
+Epoch:	8	Training Loss:	0.1646
+epoch:	9
+Total training time 65.99 seconds
+Epoch:	9	Training Loss:	0.1466
+epoch:	10
+Total training time 65.99 seconds
+Epoch:	10	Training Loss:	0.1611
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 8726	 len(unlabeled): 15542
+******* TEST *******
+Testing time	15.128 seconds
+Test acc:	49.393%	Fraction data: 35.957%
+
+** active learning iteration: 9 / 10 **
+***** Train *****
+epoch:	1
+Total training time 72.25 seconds
+Epoch:	1	Training Loss:	0.2339
+epoch:	2
+Total training time 73.91 seconds
+Epoch:	2	Training Loss:	0.2033
+epoch:	3
+Total training time 77.15 seconds
+Epoch:	3	Training Loss:	0.2001
+epoch:	4
+Total training time 79.13 seconds
+Epoch:	4	Training Loss:	0.2102
+epoch:	5
+Total training time 107.79 seconds
+Epoch:	5	Training Loss:	0.1914
+epoch:	6
+Total training time 81.84 seconds
+Epoch:	6	Training Loss:	0.2068
+epoch:	7
+Total training time 109.90 seconds
+Epoch:	7	Training Loss:	0.1854
+epoch:	8
+Total training time 82.52 seconds
+Epoch:	8	Training Loss:	0.1898
+epoch:	9
+Total training time 79.65 seconds
+Epoch:	9	Training Loss:	0.1632
+epoch:	10
+Total training time 94.67 seconds
+Epoch:	10	Training Loss:	0.1652
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 9426	 len(unlabeled): 14842
+******* TEST *******
+Testing time	22.344 seconds
+Test acc:	50.338%	Fraction data: 38.841%
+
+Split up data, cross validation number: 1
+len(train): 24268, len(test): 6067
+len(labeled): 2426	 len(unlabeled): 21842
+
+** active learning iteration: 0 / 10 **
+***** Train *****
+epoch:	1
+Total training time 20.58 seconds
+Epoch:	1	Training Loss:	0.4319
+epoch:	2
+Total training time 20.96 seconds
+Epoch:	2	Training Loss:	0.3843
+epoch:	3
+Total training time 23.56 seconds
+Epoch:	3	Training Loss:	0.3159
+epoch:	4
+Total training time 20.28 seconds
+Epoch:	4	Training Loss:	0.2686
+epoch:	5
+Total training time 19.75 seconds
+Epoch:	5	Training Loss:	0.2478
+epoch:	6
+Total training time 20.37 seconds
+Epoch:	6	Training Loss:	0.2224
+epoch:	7
+Total training time 20.03 seconds
+Epoch:	7	Training Loss:	0.2115
+epoch:	8
+Total training time 20.32 seconds
+Epoch:	8	Training Loss:	0.1921
+epoch:	9
+Total training time 21.19 seconds
+Epoch:	9	Training Loss:	0.1782
+epoch:	10
+Total training time 21.87 seconds
+Epoch:	10	Training Loss:	0.1666
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3126	 len(unlabeled): 21142
+******* TEST *******
+Testing time	16.388 seconds
+Test acc:	38.009%	Fraction data: 12.881%
+
+** active learning iteration: 1 / 10 **
+***** Train *****
+epoch:	1
+Total training time 27.87 seconds
+Epoch:	1	Training Loss:	0.2383
+epoch:	2
+Total training time 28.72 seconds
+Epoch:	2	Training Loss:	0.2063
+epoch:	3
+Total training time 28.06 seconds
+Epoch:	3	Training Loss:	0.2020
+epoch:	4
+Total training time 29.23 seconds
+Epoch:	4	Training Loss:	0.1853
+epoch:	5
+Total training time 24.19 seconds
+Epoch:	5	Training Loss:	0.1675
+epoch:	6
+Total training time 21.35 seconds
+Epoch:	6	Training Loss:	0.1710
+epoch:	7
+Total training time 21.36 seconds
+Epoch:	7	Training Loss:	0.1561
+epoch:	8
+Total training time 21.21 seconds
+Epoch:	8	Training Loss:	0.1404
+epoch:	9
+Total training time 21.41 seconds
+Epoch:	9	Training Loss:	0.1358
+epoch:	10
+Total training time 21.57 seconds
+Epoch:	10	Training Loss:	0.1428
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 3826	 len(unlabeled): 20442
+******* TEST *******
+Testing time	11.350 seconds
+Test acc:	42.181%	Fraction data: 15.766%
+
+** active learning iteration: 2 / 10 **
+***** Train *****
+epoch:	1
+Total training time 26.08 seconds
+Epoch:	1	Training Loss:	0.2060
+epoch:	2
+Total training time 25.65 seconds
+Epoch:	2	Training Loss:	0.1841
+epoch:	3
+Total training time 25.68 seconds
+Epoch:	3	Training Loss:	0.1653
+epoch:	4
+Total training time 25.67 seconds
+Epoch:	4	Training Loss:	0.1543
+epoch:	5
+Total training time 25.64 seconds
+Epoch:	5	Training Loss:	0.1611
+epoch:	6
+Total training time 25.71 seconds
+Epoch:	6	Training Loss:	0.1569
+epoch:	7
+Total training time 25.65 seconds
+Epoch:	7	Training Loss:	0.1404
+epoch:	8
+Total training time 26.04 seconds
+Epoch:	8	Training Loss:	0.1161
+epoch:	9
+Total training time 26.86 seconds
+Epoch:	9	Training Loss:	0.1162
+epoch:	10
+Total training time 26.63 seconds
+Epoch:	10	Training Loss:	0.1270
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 4526	 len(unlabeled): 19742
+******* TEST *******
+Testing time	11.195 seconds
+Test acc:	46.197%	Fraction data: 18.650%
+
+** active learning iteration: 3 / 10 **
+***** Train *****
+epoch:	1
+Total training time 31.61 seconds
+Epoch:	1	Training Loss:	0.1937
+epoch:	2
+Total training time 32.41 seconds
+Epoch:	2	Training Loss:	0.1658
+epoch:	3
+Total training time 32.99 seconds
+Epoch:	3	Training Loss:	0.1453
+epoch:	4
+Total training time 33.24 seconds
+Epoch:	4	Training Loss:	0.1403
+epoch:	5
+Total training time 33.23 seconds
+Epoch:	5	Training Loss:	0.1290
+epoch:	6
+Total training time 33.40 seconds
+Epoch:	6	Training Loss:	0.1367
+epoch:	7
+Total training time 34.21 seconds
+Epoch:	7	Training Loss:	0.1193
+epoch:	8
+Total training time 34.35 seconds
+Epoch:	8	Training Loss:	0.1154
+epoch:	9
+Total training time 34.06 seconds
+Epoch:	9	Training Loss:	0.1114
+epoch:	10
+Total training time 37.13 seconds
+Epoch:	10	Training Loss:	0.1200
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5226	 len(unlabeled): 19042
+******* TEST *******
+Testing time	19.117 seconds
+Test acc:	45.986%	Fraction data: 21.535%
+
+** active learning iteration: 4 / 10 **
+***** Train *****
+epoch:	1
+Total training time 57.97 seconds
+Epoch:	1	Training Loss:	0.1895
+epoch:	2
+Total training time 51.97 seconds
+Epoch:	2	Training Loss:	0.1503
+epoch:	3
+Total training time 43.15 seconds
+Epoch:	3	Training Loss:	0.1411
+epoch:	4
+Total training time 51.61 seconds
+Epoch:	4	Training Loss:	0.1262
+epoch:	5
+Total training time 57.35 seconds
+Epoch:	5	Training Loss:	0.1154
+epoch:	6
+Total training time 53.02 seconds
+Epoch:	6	Training Loss:	0.1229
+epoch:	7
+Total training time 43.57 seconds
+Epoch:	7	Training Loss:	0.1218
+epoch:	8
+Total training time 45.64 seconds
+Epoch:	8	Training Loss:	0.1151
+epoch:	9
+Total training time 44.40 seconds
+Epoch:	9	Training Loss:	0.1150
+epoch:	10
+Total training time 48.95 seconds
+Epoch:	10	Training Loss:	0.0994
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 5926	 len(unlabeled): 18342
+******* TEST *******
+Testing time	20.208 seconds
+Test acc:	46.904%	Fraction data: 24.419%
+
+** active learning iteration: 5 / 10 **
+***** Train *****
+epoch:	1
+Total training time 52.64 seconds
+Epoch:	1	Training Loss:	0.1978
+epoch:	2
+Total training time 53.28 seconds
+Epoch:	2	Training Loss:	0.1494
+epoch:	3
+Total training time 53.29 seconds
+Epoch:	3	Training Loss:	0.1340
+epoch:	4
+Total training time 53.95 seconds
+Epoch:	4	Training Loss:	0.1330
+epoch:	5
+Total training time 58.39 seconds
+Epoch:	5	Training Loss:	0.1235
+epoch:	6
+Total training time 58.71 seconds
+Epoch:	6	Training Loss:	0.1148
+epoch:	7
+Total training time 66.55 seconds
+Epoch:	7	Training Loss:	0.1217
+epoch:	8
+Total training time 54.05 seconds
+Epoch:	8	Training Loss:	0.1220
+epoch:	9
+Total training time 86.79 seconds
+Epoch:	9	Training Loss:	0.1139
+epoch:	10
+Total training time 56.77 seconds
+Epoch:	10	Training Loss:	0.1145
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 6626	 len(unlabeled): 17642
+******* TEST *******
+Testing time	22.333 seconds
+Test acc:	49.154%	Fraction data: 27.303%
+
+** active learning iteration: 6 / 10 **
+***** Train *****
+epoch:	1
+Total training time 53.48 seconds
+Epoch:	1	Training Loss:	0.1948
+epoch:	2
+Total training time 56.20 seconds
+Epoch:	2	Training Loss:	0.1554
+epoch:	3
+Total training time 55.15 seconds
+Epoch:	3	Training Loss:	0.1529
+epoch:	4
+Total training time 68.96 seconds
+Epoch:	4	Training Loss:	0.1239
+epoch:	5
+Total training time 64.83 seconds
+Epoch:	5	Training Loss:	0.1264
+epoch:	6
+Total training time 72.67 seconds
+Epoch:	6	Training Loss:	0.1254
+epoch:	7
+Total training time 72.02 seconds
+Epoch:	7	Training Loss:	0.1149
+epoch:	8
+Total training time 68.27 seconds
+Epoch:	8	Training Loss:	0.1200
+epoch:	9
+Total training time 67.82 seconds
+Epoch:	9	Training Loss:	0.1144
+epoch:	10
+Total training time 76.52 seconds
+Epoch:	10	Training Loss:	0.1182
+***** Active learning *****
+Update size of labeled and unlabeled dataset by adding 700 uncertain samples
+len(labeled): 7326	 len(unlabeled): 16942
+******* TEST *******
+Testing time	15.740 seconds
+Test acc:	47.912%	Fraction data: 30.188%
+
+** active learning iteration: 7 / 10 **
+***** Train *****
+epoch:	1
+Total training time 84.52 seconds
+Epoch:	1	Training Loss:	0.2084
+epoch:	2
+Total training time 72.48 seconds
+Epoch:	2	Training Loss:	0.1759
+epoch:	3
+Total training time 87.59 seconds
+Epoch:	3	Training Loss:	0.1527
+epoch:	4
+Total training time 70.45 seconds
+Epoch:	4	Training Loss:	0.1555
+epoch:	5
