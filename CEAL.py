@@ -60,7 +60,7 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
     if model_name == "alexnet":
         net = AlexNet(num_classes, device)
     if model_name == "resnet152":
-        net = AlexNet(num_classes, num_channels, device)
+        net = ResNet152(num_classes, num_channels, device)
     print(net.model)
     return net.model    
 
@@ -183,21 +183,21 @@ def run(device, log_file, epochs, batch_size,
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
-            fh.write('\n** active learning iteration: {} / {} **\n'.format(iter, num_iter))
+            fh.write('\n** Active learning iteration: {} / {} **\n'.format(iter, num_iter))
 
             # ---------- Train model ----------- #
-            fh.write('***** Train *****\n')
+            fh.write('***** TRAIN *****\n')
             for epoch in range(1, epochs+1):
                 fh.write('epoch:\t{}\n'.format(epoch))
                 t0 = time.time()
                 train_loss = \
                     train(net, device, labeled_loader, optimizer, criterion)
-                fh.write('Total training time {:.2f} seconds\n'.format(time.time() - t0))
+                fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
                 
             # ---------- Active learning ----- #
-            fh.write('***** Active learning *****\n')
+            fh.write('***** ACTIVE LEARNING *****\n')
             pred_prob = predict(net, device, unlabeled_loader, num_classes)
 
             # get k uncertain samples
@@ -241,7 +241,7 @@ if __name__ == "__main__":
     filename = data_dir + "image_set.data"
     log_file = data_dir + "_run.log"
     file_ending = ".jpg"
-    model_name = "alexnet"
+    model_name = "resnet152"
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     size = 64
     num_channels = 3
