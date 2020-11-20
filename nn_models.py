@@ -14,7 +14,7 @@ import logging
 
 class ResNet152(object):
 
-    def __init__(self, n_classes, device):
+    def __init__(self, n_classes, n_channels, device):
 
         self.n_classes = n_classes
         self.model = resnet152(pretrained=True, progress=True)
@@ -23,11 +23,9 @@ class ResNet152(object):
             self.device = torch.device(
                     "cuda:0" if torch.cuda.is_available() else "cpu")
 
-    def __change_last_layer():
-        pass
+    def __change_last_layer(self) -> None:
+        self.model.fc = torch.nn.Linear(2048, self.n_classes)
         
-
-
 
 class AlexNet(object):
 
@@ -75,5 +73,5 @@ class AlexNet(object):
 
 if __name__ == "__main__":
 
-    model = AlexNet(7, "gpu")
+    model = ResNet152(7, 3, "gpu")
     print(model.model)
