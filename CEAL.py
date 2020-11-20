@@ -52,8 +52,9 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     except Exception as e:
         fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
-    fh.close()
     fh.write('Len dataset: {}\n'.format(len(dataset)))
+    fh.close()
+
     return dataset
 
 
