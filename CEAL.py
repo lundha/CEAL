@@ -64,7 +64,7 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
         net = AlexNet(num_classes, device)
     if model_name == "resnet152":
         net = ResNet152(num_classes, num_channels, device)
-    return net.model, net.device    
+    return net.model    
 
 
 def train(model, device, labeled_loader, optimizer, criterion):
@@ -135,7 +135,7 @@ def test(model, device, criterion, test_loader, log_file):
         total += target.size(0)
         correct += (predicted == target).sum().item()
 
-    return accuracy
+    return accuracy, balanced_accuracy
         
 def run(device, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels):
@@ -149,7 +149,7 @@ def run(device, log_file, epochs, batch_size,
         
         fh = open(log_file, 'a+')
 
-        net, device = load_model(model_name, num_classes, log_file, size, device, num_channels)
+        net = load_model(model_name, num_classes, log_file, size, device, num_channels)
         optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
         net = net.float() 
 
@@ -223,22 +223,74 @@ def run(device, log_file, epochs, batch_size,
             # ------------ Test model ------------- #
             fh.write('******* TEST *******\n')
             t0 = time.time()
-            test_acc = test(net, device, criterion, test_loader, log_file)
+            test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
             t1 = time.time()
             fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
-                    'Fraction data: {:.3f}%\n'.format(test_acc,
+                     'Test balacc:\t{:.3f}%\t'
+                    'Fraction data: {:.3f}%\n'.format(test_acc, test_balacc,
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
             fh.close()
+
+def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
+
+    criterion = nn.CrossEntropyLoss()
+    kf = KFold(n_splits=5, random_state=None, shuffle=True)
+
+    for train_index, test_index in kf.split(dataset):
+
+        fh = open(log_file, 'a+')    
+        net = load_model(model_name, num_classes, log_file, size, device, num_channels)
+        optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
+        net = net.float()
+
+        train_set = Subset(dataset, train_index)
+        test_set = Subset(dataset, test_index)
+
+        fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
+        
+        # Define test data
+        test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
+        train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
+        fh.write('len(train): {}, len(test): {}\n'.format(len(train_loader.sampler.indices), len(test_loader.sampler.indices)))
+
+        fh.close()
+        fh = open(log_file, 'a+')    
+        # ---------- Train model ----------- #
+        fh.write('***** TRAIN *****\n')
+        fh.close()
+        for epoch in range(1, epochs+1):
+            fh = open(log_file, 'a+')    
+            fh.write('epoch:\t{}\n'.format(epoch))
+            t0 = time.time()
+            train_loss = \
+                train(net, device, labeled_loader, optimizer, criterion)
+            fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
+            train_loss = train_loss / len(labeled_loader.dataset)
+            fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))   
+            fh.close()    
+
+        # ------------ Test model ------------- #
+        fh = open(log_file, 'a+')    
+        fh.write('******* TEST *******\n')
+        t0 = time.time()
+        test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
+        t1 = time.time()
+        fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
+        fh.write('Test acc:\t{:.3f}%\t'
+                ' Test balacc:\t{:.3f}%\t'
+                'Fraction data: {:.3f}%\n'.format(test_acc, test_balacc,
+                        100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+        fh.close()
+
+
 
 if __name__ == "__main__":
 
     weight_decay = 0.0001
     start_lr = 0.001
-    # Define data directory and files for saving classes and data and log file
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
-
-    device = None
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
@@ -249,6 +301,7 @@ if __name__ == "__main__":
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
+    bench_epochs = 40
     batch_size = 64
     num_iter = 10
     criteria = "cl"
@@ -261,4 +314,5 @@ if __name__ == "__main__":
     fh.close()
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+    #run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+    benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
