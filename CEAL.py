@@ -139,6 +139,14 @@ def test(model, device, criterion, test_loader, log_file):
         
 def run(device, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels):
+
+
+    fh = open(log_file, 'a+')
+    fh.write('\n**** New CEAL **** \n')
+    fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
+            'k: {}\t, criteria: {}\t, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
+    fh.close()
+    
     
     criterion = nn.CrossEntropyLoss()
     iteration = 0
@@ -234,9 +242,15 @@ def run(device, log_file, epochs, batch_size,
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
+    fh = open(log_file, 'a+')
+    fh.write('\n**** New BENCHMARK **** \n')
+    fh.write('INFO: Running on: {},\tmodel name: {},\tclasses: {},\tepochs: {}\n'.format(device, model_name, num_classes, bench_epochs))
+    fh.close()
+
     criterion = nn.CrossEntropyLoss()
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
     iteration = 1
+
     for train_index, test_index in kf.split(dataset):
 
         fh = open(log_file, 'a+')    
@@ -260,7 +274,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         # ---------- Train model ----------- #
         fh.write('***** TRAIN *****\n')
         fh.close()
-        for epoch in range(1, epochs+1):
+        for epoch in range(1, bench_epochs+1):
             fh = open(log_file, 'a+')    
             fh.write('epoch:\t{}\n'.format(epoch))
             t0 = time.time()
@@ -306,11 +320,7 @@ if __name__ == "__main__":
     criteria = "cl"
     k = 700
 
-    fh = open(log_file, 'a+')
-    fh.write('\n**** New CEAL **** \n')
-    fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
-            'k: {}\t, criteria: {}\t, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
-    fh.close()
+
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
     #run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
