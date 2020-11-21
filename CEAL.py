@@ -144,7 +144,7 @@ def run(device, log_file, epochs, batch_size,
     fh = open(log_file, 'a+')
     fh.write('\n**** New CEAL **** \n')
     fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'
-            'k: {}, criteria: {}, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
+            'k: {}, criteria: {}, num iterations: {}, batch size: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter, batch_size))
     fh.close()
     
     
@@ -244,7 +244,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New BENCHMARK **** \n')
-    fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'.format(device, model_name, num_classes, bench_epochs))
+    fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}, batch size: {}\n'.format(device, model_name, num_classes, bench_epochs, batch_size))
     fh.close()
 
     criterion = nn.CrossEntropyLoss()
@@ -292,7 +292,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         t1 = time.time()
         fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
         fh.write('Test acc:\t{:.3f}%\t'
-                 'Test balacc:\t{:.3f}%\t'.format(test_acc, test_balacc))
+                 'Test balacc:\t{:.3f}%\t'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader)))
         fh.close()
 
 
