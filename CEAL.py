@@ -248,11 +248,12 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         test_set = Subset(dataset, test_index)
 
         fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
+        fh.write('len(train): {}, len(test): {}\n'.format(len(train_set), len(test_set)))
+
         iteration += 1
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-        fh.write('len(train): {}, len(test): {}\n'.format(len(train_loader.sampler.indices), len(test_loader.sampler.indices)))
 
         fh.close()
         fh = open(log_file, 'a+')    
