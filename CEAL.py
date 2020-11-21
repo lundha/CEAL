@@ -236,7 +236,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
 
     criterion = nn.CrossEntropyLoss()
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
-
+    iteration = 1
     for train_index, test_index in kf.split(dataset):
 
         fh = open(log_file, 'a+')    
@@ -248,7 +248,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         test_set = Subset(dataset, test_index)
 
         fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
-        
+        iteration += 1
         # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
