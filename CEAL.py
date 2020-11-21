@@ -313,8 +313,8 @@ if __name__ == "__main__":
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
-    bench_epochs = 40
-    batch_size = 64
+    bench_epochs = 20
+    batch_size = 16
     num_iter = 10
     criteria = "cl"
     k = 700
