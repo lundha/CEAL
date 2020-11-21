@@ -235,6 +235,7 @@ def run(device, log_file, epochs, batch_size,
 if __name__ == "__main__":
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print("device: ", device)
     weight_decay = 0.0001
     start_lr = 0.001
     # Define data directory and files for saving classes and data and log file
