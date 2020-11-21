@@ -31,7 +31,7 @@ from metrics import METRIX
 import torch
 from torch import nn
 from torch import optim
-from dataloader import PlanktonDataSet, Resize, Normalization, ToTensor, Convert2RGB
+from dataloader import PlanktonDataSet, Resize, Normalize, ToTensor, Convert2RGB
 from nn_models import AlexNet, ResNet152
 from samples_selection import get_uncertain_samples
 from criteria import least_confidence
@@ -43,9 +43,9 @@ from torch.utils.data.sampler import SubsetRandomSampler
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     
     fh = open(log_file, 'a+')
-    fh.write('***** Loading dataset *****\n')
+    fh.write('\n***** Loading dataset *****\n')
 
-    composed = transforms.Compose([Convert2RGB(), Resize(64), ToTensor()])
+    composed = transforms.Compose([Convert2RGB(), Resize(64), Normalize(), ToTensor()])
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
@@ -143,8 +143,8 @@ def run(device, log_file, epochs, batch_size,
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New CEAL **** \n')
-    fh.write('INFO: Running on: {}\t model name: {}\t, classes: {}\t, epochs: {}\n'
-            'k: {}\t, criteria: {}\t, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
+    fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'
+            'k: {}, criteria: {}, num iterations: {}\n'.format(device, model_name, num_classes, epochs, k, criteria, num_iter))
     fh.close()
     
     
@@ -244,7 +244,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New BENCHMARK **** \n')
-    fh.write('INFO: Running on: {},\tmodel name: {},\tclasses: {},\tepochs: {}\n'.format(device, model_name, num_classes, bench_epochs))
+    fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'.format(device, model_name, num_classes, bench_epochs))
     fh.close()
 
     criterion = nn.CrossEntropyLoss()
@@ -276,7 +276,6 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         fh.close()
         for epoch in range(1, bench_epochs+1):
             fh = open(log_file, 'a+')    
-            fh.write('epoch:\t{}\n'.format(epoch))
             t0 = time.time()
             train_loss = \
                 train(net, device, train_loader, optimizer, criterion)

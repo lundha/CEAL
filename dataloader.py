@@ -179,19 +179,23 @@ class Convert2RGB(object):
         sample = {'image': image, 'label': label}    
         return sample
 
-class Normalization(object):
-    ''' Rewrite
-    '''
-    def ___call__(self, sample):
-        image, label = sample['image'], sample['label']
 
-        norm = transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-        h, w = image.shape[:2]
-        resize = transform.resize(image, (h,w))
-        image = norm(image)
-        return {'image': image,
-                'label': label}
+class Normalize(object):
+  
+    def __init__(self, mean: np.ndarray = np.array([0.5, 0.5, 0.5]),  
+                    std: np.ndarray = np.array([0.5, 0.5, 0.5])): 
+        self.mean = mean
+        self.std = std
 
+    def __call__(self, sample):
+
+        img, label = sample['image'], sample['label']
+        img = img - self.mean
+        img /= self.std
+        sample = {'image': img, 'label': label}
+        return sample
+
+  
 class ToTensor(object):
 
     def __call__(self, sample):
