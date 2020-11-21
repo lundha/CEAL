@@ -236,7 +236,7 @@ def run(device, log_file, epochs, batch_size,
             fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
                      'Test balacc:\t{:.3f}%\t'
-                    'Fraction data: {:.3f}%\n'.format(test_acc, test_balacc,
+                    'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
             fh.close()
 
