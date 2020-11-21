@@ -19,6 +19,9 @@ class ResNet152(object):
         self.n_classes = n_classes
         self.model = resnet152(pretrained=True, progress=True)
         self.__change_last_layer()
+        if device is None:
+            self.device = torch.device(
+                "cuda:0" if torch.cuda.is_available() else "cpu")
 
     def __change_last_layer(self) -> None:
         self.model.fc = torch.nn.Linear(2048, self.n_classes)
@@ -31,6 +34,9 @@ class AlexNet(object):
 
         self.n_classes = n_classes
         self.model = alexnet(pretrained=True, progress=True)
+        if device is None:
+            self.device = torch.device(
+                "cuda:0" if torch.cuda.is_available() else "cpu")
 
         self.__change_last_layer()
 

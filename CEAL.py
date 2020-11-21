@@ -64,8 +64,7 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
         net = AlexNet(num_classes, device)
     if model_name == "resnet152":
         net = ResNet152(num_classes, num_channels, device)
-    print(net.model)
-    return net.model    
+    return net.model, net.device    
 
 
 def train(model, device, labeled_loader, optimizer, criterion):
@@ -150,7 +149,7 @@ def run(device, log_file, epochs, batch_size,
         
         fh = open(log_file, 'a+')
 
-        net = load_model(model_name, num_classes, log_file, size, device, num_channels)
+        net, device = load_model(model_name, num_classes, log_file, size, device, num_channels)
         optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
         net = net.float() 
 
@@ -234,14 +233,12 @@ def run(device, log_file, epochs, batch_size,
 
 if __name__ == "__main__":
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print("device: ", device)
     weight_decay = 0.0001
     start_lr = 0.001
     # Define data directory and files for saving classes and data and log file
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
 
-
+    device = None
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
