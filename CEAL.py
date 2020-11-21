@@ -28,6 +28,7 @@ import csv
 import time
 from tqdm import tqdm
 from metrics import METRIX
+import torch
 from torch import nn
 from torch import optim
 from dataloader import PlanktonDataSet, Resize, Normalization, ToTensor, Convert2RGB
@@ -110,6 +111,7 @@ def predict(model, device, unlabeled_loader, num_classes):
 
 
 def test(model, device, criterion, test_loader, log_file):
+    
     model.eval()
     model.to(device)
     test_loss = 0
@@ -232,7 +234,7 @@ def run(device, log_file, epochs, batch_size,
 
 if __name__ == "__main__":
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     weight_decay = 0.0001
     start_lr = 0.001
     # Define data directory and files for saving classes and data and log file
