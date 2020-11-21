@@ -265,9 +265,9 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
             fh.write('epoch:\t{}\n'.format(epoch))
             t0 = time.time()
             train_loss = \
-                train(net, device, labeled_loader, optimizer, criterion)
+                train(net, device, train_loader, optimizer, criterion)
             fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
-            train_loss = train_loss / len(labeled_loader.dataset)
+            train_loss = train_loss / len(train_loader.dataset)
             fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))   
             fh.close()    
 
@@ -279,9 +279,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         t1 = time.time()
         fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
         fh.write('Test acc:\t{:.3f}%\t'
-                ' Test balacc:\t{:.3f}%\t'
-                'Fraction data: {:.3f}%\n'.format(test_acc, test_balacc,
-                        100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+                 'Test balacc:\t{:.3f}%\t'.format(test_acc, test_balacc))
         fh.close()
 
 
