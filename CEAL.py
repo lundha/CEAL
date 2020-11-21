@@ -292,7 +292,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         t1 = time.time()
         fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
         fh.write('Test acc:\t{:.3f}%\t'
-                 'Test balacc:\t{:.3f}%\t'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader)))
+                 'Test balacc:\t{:.3f}%\t\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader)))
         fh.close()
 
 
