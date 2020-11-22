@@ -189,6 +189,7 @@ def run(device, log_file, epochs, batch_size,
         fh.close()
 
         flag = 0
+        k = k
         acc_list = []
         balacc_list = []
 
@@ -206,11 +207,25 @@ def run(device, log_file, epochs, batch_size,
                 fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
-                
+
+
+            # ------------ Test model ------------- #
+            fh.write('******* TEST *******\n')
+            t0 = time.time()
+            test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
+            t1 = time.time()
+            fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
+            fh.write('Test acc:\t{:.3f}%\t'
+                     'Test balacc:\t{:.3f}%\t'
+                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
+                            100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+
+            if flag == 1:
+                break
+
             # ---------- Active learning ----- #
             fh.write('***** ACTIVE LEARNING *****\n')
             pred_prob = predict(net, device, unlabeled_loader, num_classes)
-
             
             if len(pred_prob) < k:
                 k = len(pred_prob)
@@ -233,19 +248,9 @@ def run(device, log_file, epochs, batch_size,
                     'len(labeled): {}\t len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
-            # ------------ Test model ------------- #
-            fh.write('******* TEST *******\n')
-            t0 = time.time()
-            test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
-            t1 = time.time()
-            fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
-            fh.write('Test acc:\t{:.3f}%\t'
-                     'Test balacc:\t{:.3f}%\t'
-                    'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
-                            100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+
             fh.close()
-            if flag == 1:
-                break
+          
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -323,11 +328,15 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = 16
     num_iter = 40
-    criteria = "cl"
+    criteria = "lc"
+    criterias = ["lc", "ms", "en", "rd"]
     k = 700
 
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+    #run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
     #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
+
+    for criteria in criterias:
+        run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
