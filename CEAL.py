@@ -149,7 +149,7 @@ def run(device, log_file, epochs, batch_size,
     
     
     criterion = nn.CrossEntropyLoss()
-    iteration = 0
+    iteration = 1
     # KFold validation
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
 
@@ -327,8 +327,7 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = 16
     num_iter = 40
-    criteria = "lc"
-    criterias = ["ms", "en", "rd", "lc"]
+    criterias = ["rd", "en", "ms", "lc"]
     k_samples = 700
 
 
