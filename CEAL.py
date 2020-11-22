@@ -188,7 +188,7 @@ def run(device, log_file, epochs, batch_size,
                 format(len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
         fh.close()
 
-
+        flag = 0
         acc_list = []
         balacc_list = []
 
@@ -210,6 +210,11 @@ def run(device, log_file, epochs, batch_size,
             # ---------- Active learning ----- #
             fh.write('***** ACTIVE LEARNING *****\n')
             pred_prob = predict(net, device, unlabeled_loader, num_classes)
+
+            
+            if len(pred_prob) < k:
+                k = len(pred_prob)
+                flag = 1
 
             # get k uncertain samples
             uncert_samp_idx = get_uncertain_samples(pred_prob=pred_prob, k=k,
@@ -239,6 +244,8 @@ def run(device, log_file, epochs, batch_size,
                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
             fh.close()
+            if flag == 1:
+                break
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -315,12 +322,12 @@ if __name__ == "__main__":
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = 16
-    num_iter = 10
+    num_iter = 40
     criteria = "cl"
     k = 700
 
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    #run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
-    benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
+    run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+    #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
