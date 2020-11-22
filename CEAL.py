@@ -138,7 +138,7 @@ def test(model, device, criterion, test_loader, log_file):
     return accuracy, balanced_accuracy
         
 def run(device, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels):
 
 
     fh = open(log_file, 'a+')
@@ -189,7 +189,7 @@ def run(device, log_file, epochs, batch_size,
         fh.close()
 
         flag = 0
-        k = k
+        k = k_samples
         acc_list = []
         balacc_list = []
 
@@ -200,7 +200,6 @@ def run(device, log_file, epochs, batch_size,
             # ---------- Train model ----------- #
             fh.write('***** TRAIN *****\n')
             for epoch in range(1, epochs+1):
-                fh.write('epoch:\t{}\n'.format(epoch))
                 t0 = time.time()
                 train_loss = \
                     train(net, device, labeled_loader, optimizer, criterion)
@@ -245,7 +244,7 @@ def run(device, log_file, epochs, batch_size,
                 unlabeled_loader.sampler.indices.remove(val)
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples\n'
-                    'len(labeled): {}\t len(unlabeled): {}\n'.
+                    'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
 
@@ -329,8 +328,8 @@ if __name__ == "__main__":
     batch_size = 16
     num_iter = 40
     criteria = "lc"
-    criterias = ["lc", "ms", "en", "rd"]
-    k = 700
+    criterias = ["ms", "en", "rd", "lc"]
+    k_samples = 700
 
 
 
@@ -339,4 +338,4 @@ if __name__ == "__main__":
     #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
 
     for criteria in criterias:
-        run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+        run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels)
