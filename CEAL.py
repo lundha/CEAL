@@ -119,24 +119,24 @@ def test(model, device, criterion, test_loader, log_file):
     accuracy = 0
     balanced_accuracy = 0
     ceal_acc = 0
-
-    for sample in test_loader:
-        data, target = sample['image'], sample['label']
-        data, target = data.to(device), target.to(device)
-        outputs = model(data.float())
-        loss = criterion(outputs, target.squeeze(1).long())
-        test_loss += loss.item() * data.size(0)
-        
-        acc, bacc, precision, recall, f1_score, rep = \
-            METRIX(target.squeeze(1).long(), outputs)
-        accuracy += acc
-        balanced_accuracy += bacc
-        
-        _, predicted = torch.max(outputs.data, 1)
-        total += target.size(0)
-        correct += (predicted == target).sum().item()
-        ceal_acc = 100 * correct / total
-
+  
+    with torch.no_grad():
+        for sample in test_loader:
+            data, target = sample['image'], sample['label']
+            data, target = data.to(device), target.to(device)
+            outputs = model(data.float())
+            loss = criterion(outputs, target.squeeze(1).long())
+            test_loss += loss.item() * data.size(0)
+            
+            acc, bacc, precision, recall, f1_score, rep = \
+                METRIX(target.squeeze(1).long(), outputs)
+            accuracy += acc
+            balanced_accuracy += bacc
+            
+            _, predicted = torch.max(outputs.data, 1)
+            total += target.size(0)
+            correct += (predicted == target).sum().item()
+    ceal_acc = 100 * correct / total
     return accuracy, balanced_accuracy, ceal_acc
         
 def run(device, log_file, epochs, batch_size,
