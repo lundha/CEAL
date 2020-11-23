@@ -175,7 +175,7 @@ def run(device, log_file, epochs, batch_size,
         indices = list(range(len(train_set)))
 
         unlabeled_indices, labeled_indices = indices[split:], indices[:split]
-        #unlabeled, labeled = random_split(train_set,[len(train_set) - split_size,split_size])
+
         unlabeled_sampler = SubsetRandomSampler(unlabeled_indices)
         labeled_sampler = SubsetRandomSampler(labeled_indices)
 
@@ -190,6 +190,7 @@ def run(device, log_file, epochs, batch_size,
 
         flag = 0
         k = k_samples
+        fraction = []
         acc_list = []
         balacc_list = []
 
@@ -218,6 +219,10 @@ def run(device, log_file, epochs, batch_size,
                      'Test balacc:\t{:.3f}%\t'
                      'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+
+            fraction.append(100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices)))
+            acc_list.append(test_acc*100/len(test_loader))
+            balacc_list.append(test_balacc*100/len(test_loader))
 
             if flag == 1:
                 break
@@ -249,6 +254,11 @@ def run(device, log_file, epochs, batch_size,
 
 
             fh.close()
+
+        fh = open(log_file, 'a+')
+        fh.write('\nList acc: {}\n',
+                 '\List balacc: {}\n'
+                 'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
           
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
@@ -317,7 +327,7 @@ if __name__ == "__main__":
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    log_file = data_dir + "_run.log"
+    log_file = data_dir + "ceal.log"
     file_ending = ".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
@@ -325,10 +335,10 @@ if __name__ == "__main__":
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
-    batch_size = 16
+    batch_size = 32
     num_iter = 40
-    criterias = ["rd", "en", "ms", "lc"]
-    k_samples = 700
+    criterias = ["rd", "lc"]
+    k_samples = 300
 
 
 
