@@ -38,7 +38,7 @@ from criteria import least_confidence
 import sys
 import argparse
 from torch.utils.data.sampler import SubsetRandomSampler
-
+from operator import add
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     
@@ -148,7 +148,8 @@ def run(device, log_file, epochs, batch_size,
     fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'
             'k: {}, criteria: {}, num iterations: {}, batch size: {}\n'.format(device, model_name, num_classes, epochs, k_samples, criteria, num_iter, batch_size))
     fh.close()
-    
+    tot_acc = []
+    tot_balacc = []
     
     criterion = nn.CrossEntropyLoss()
     iteration = 1
@@ -256,14 +257,17 @@ def run(device, log_file, epochs, batch_size,
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
-
             fh.close()
 
         fh = open(log_file, 'a+')
         fh.write('\nList acc: {}\n'
                  'List balacc: {}\n'
                  'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
-        fh.close()          
+        fh.close()
+        tot_acc = list(map(add, acc_list, tot_acc))
+        tot_balacc = list(map(add, balacc_list, tot_balacc))    
+
+    return tot_acc, tot_balacc, fraction
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -337,7 +341,7 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 10  # Add break when training loss stops decreasing 
+    epochs = 1  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
@@ -351,4 +355,8 @@ if __name__ == "__main__":
     #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
 
     for criteria in criterias:
-        run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels)
+        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels)
+        fh = open(log_file, 'a+')
+        fh.write('\n****\n')
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria, tot_acc/len(fraction), tot_balacc/len(fraction)))
+        fh.close()
