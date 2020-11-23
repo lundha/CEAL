@@ -193,6 +193,12 @@ def run(device, log_file, epochs, batch_size,
         fraction = []
         acc_list = []
         balacc_list = []
+        fh = open(log_file, 'a+')
+        fh.write('\nList acc: {}\n'
+                 '\List balacc: {}\n'
+                 'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
+        fh.close()          
+
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
@@ -256,10 +262,10 @@ def run(device, log_file, epochs, batch_size,
             fh.close()
 
         fh = open(log_file, 'a+')
-        fh.write('\nList acc: {}\n',
+        fh.write('\nList acc: {}\n'
                  '\List balacc: {}\n'
                  'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
-          
+        fh.close()          
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -335,10 +341,10 @@ if __name__ == "__main__":
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
-    batch_size = 64
+    batch_size = int(sys.argv[4])
     num_iter = 40
     criterias = ["rd", "lc"]
-    k_samples = 1000
+    k_samples = int(sys.argv[5])
 
 
 
