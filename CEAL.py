@@ -118,6 +118,7 @@ def test(model, device, criterion, test_loader, log_file):
     correct = 0
     accuracy = 0
     balanced_accuracy = 0
+    ceal_acc = 0
 
     for sample in test_loader:
         data, target = sample['image'], sample['label']
@@ -134,8 +135,9 @@ def test(model, device, criterion, test_loader, log_file):
         _, predicted = torch.max(outputs.data, 1)
         total += target.size(0)
         correct += (predicted == target).sum().item()
+        ceal_acc = 100 * correct / total
 
-    return accuracy, balanced_accuracy
+    return accuracy, balanced_accuracy, ceal_acc
         
 def run(device, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels):
@@ -213,12 +215,13 @@ def run(device, log_file, epochs, batch_size,
             # ------------ Test model ------------- #
             fh.write('******* TEST *******\n')
             t0 = time.time()
-            test_acc, test_balacc = test(net, device, criterion, test_loader, log_file)
+            test_acc, test_balacc, ceal_acc = test(net, device, criterion, test_loader, log_file)
             t1 = time.time()
             fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
                      'Test balacc:\t{:.3f}%\t'
-                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader),
+                     'Test ceal-acc:\t{:.3f}%\t'
+                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), ceal_acc,
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
 
             fraction.append(100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices)))
