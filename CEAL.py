@@ -194,11 +194,6 @@ def run(device, log_file, epochs, batch_size,
         acc_list = []
         balacc_list = []
         fh = open(log_file, 'a+')
-        fh.write('\nList acc: {}\n'
-                 '\List balacc: {}\n'
-                 'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
-        fh.close()          
-
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
@@ -263,7 +258,7 @@ def run(device, log_file, epochs, batch_size,
 
         fh = open(log_file, 'a+')
         fh.write('\nList acc: {}\n'
-                 '\List balacc: {}\n'
+                 'List balacc: {}\n'
                  'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
         fh.close()          
 
@@ -333,7 +328,7 @@ if __name__ == "__main__":
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    log_file = data_dir + "ceal.log"
+    log_file = data_dir + sys.argv[6] + ".log"
     file_ending = ".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
