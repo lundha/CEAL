@@ -126,4 +126,4 @@ def entropy(pred_prob: np.ndarray, k: int):
 
     # Sort en_i in descending order
     en_i = en_i[(-1 * en_i[:, 2]).argsort()]
-    return en_i[:k, 0].astype(np.int32)
+    return en_i[:k, 0].astype(np.int32), en_i[:k]
