@@ -90,7 +90,7 @@ def margin_sampling(pred_prob: np.ndarray, k: int):
     return ms_i[:k, 0].astype(np.int32)
 
 
-def entropy(pred_prob: np.ndarray, k: int):
+def entropy(pred_prob: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:
     f"""
     Rank all the unlabeled samples in an descending order according to
     the equation 4
