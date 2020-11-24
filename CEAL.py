@@ -39,6 +39,7 @@ import sys
 import argparse
 from torch.utils.data.sampler import SubsetRandomSampler
 from operator import add
+from subset import my_subset
 
 def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
     
@@ -164,8 +165,19 @@ def run(device, log_file, epochs, batch_size,
         optimizer = optim.Adam(net.parameters(), lr=start_lr, weight_decay=weight_decay)
         net = net.float() 
 
-        train_set = Subset(dataset, train_index)
-        test_set = Subset(dataset, test_index)
+       # train_set = Subset(dataset, train_index)
+       # test_set = Subset(dataset, test_index)
+       train_labels = []
+       test_labels = []
+
+        for idx, sample in enumerate(dataset):
+            if idx in train_index:
+                train_labels.append(sample['label'])
+            else:
+                test_labels.append(sample['label'])
+
+        train_set = my_subset(dataset, train_index, )
+        test_set  = my_subset(dataset, test_index, )
 
         #train_set, test_set = dataset[train_index], dataset[test_index]
         fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
