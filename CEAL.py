@@ -265,7 +265,7 @@ def run(device, log_file, epochs, batch_size,
             labeled_loader.sampler.indices.extend(hcs_idx)
             # (2) update the original labels with the pseudo labels.
             for idx in range(len(hcs_idx)):
-                labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
+                labeled_loader.dataset.classlist[hcs_idx[idx]] = hcs_labels[idx]
             
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
