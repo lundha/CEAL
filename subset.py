@@ -18,9 +18,8 @@ class my_subset(Dataset):
        # labels_hold[self.indices] = labels 
         self.labels = labels
     def __getitem__(self, idx):
-        image = self.dataset[self.indices[idx]][0]
-        label = self.labels[self.indices[idx]]
-        return (image, label)
+         return self.dataset[self.indices[idx]]
+
 
     def __len__(self):
         return len(self.indices)
