@@ -249,11 +249,6 @@ def run(device, log_file, epochs, batch_size,
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
-            # remove the uncertain samples from the unlabeled pool
-            for val in uncert_samp_idx:
-                unlabeled_loader.sampler.indices.remove(val)
-
-
             # get high confidence samples `dh`
             hcs_idx, hcs_labels = get_high_confidence_samples(pred_prob=pred_prob,
                                                             delta=delta_0)
@@ -271,6 +266,11 @@ def run(device, log_file, epochs, batch_size,
             # (2) update the original labels with the pseudo labels.
             for idx in range(len(hcs_idx)):
                 labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
+            
+            # remove the uncertain samples from the unlabeled pool
+            for val in uncert_samp_idx:
+                unlabeled_loader.sampler.indices.remove(val)
+
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
