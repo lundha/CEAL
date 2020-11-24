@@ -358,5 +358,6 @@ if __name__ == "__main__":
         tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels)
         fh = open(log_file, 'a+')
         fh.write('\n****\n')
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria, tot_acc/len(fraction), tot_balacc/len(fraction)))
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
         fh.close()
+
