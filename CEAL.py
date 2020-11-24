@@ -33,7 +33,7 @@ from torch import nn
 from torch import optim
 from dataloader import PlanktonDataSet, Resize, Normalize, ToTensor, Convert2RGB
 from nn_models import AlexNet, ResNet152
-from samples_selection import get_uncertain_samples
+from samples_selection import get_uncertain_samples, get_high_confidence_samples
 from criteria import least_confidence
 import sys
 import argparse
@@ -140,7 +140,7 @@ def test(model, device, criterion, test_loader, log_file):
     return accuracy, balanced_accuracy, ceal_acc
         
 def run(device, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0):
 
 
     fh = open(log_file, 'a+')
@@ -148,8 +148,8 @@ def run(device, log_file, epochs, batch_size,
     fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'
             'k: {}, criteria: {}, num iterations: {}, batch size: {}\n'.format(device, model_name, num_classes, epochs, k_samples, criteria, num_iter, batch_size))
     fh.close()
-    tot_acc = []
-    tot_balacc = []
+    tot_acc = [0]*10
+    tot_balacc = [0]*10
     
     criterion = nn.CrossEntropyLoss()
     iteration = 1
@@ -193,9 +193,9 @@ def run(device, log_file, epochs, batch_size,
 
         flag = 0
         k = k_samples
-        fraction = []
-        acc_list = []
-        balacc_list = []
+        fraction = [0]*10
+        acc_list = [0]*10
+        balacc_list = [0]*10
         fh = open(log_file, 'a+')
 
         for iter in range(num_iter):
@@ -253,9 +253,28 @@ def run(device, log_file, epochs, batch_size,
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
 
-            fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples\n'
+
+            # get high confidence samples `dh`
+            hcs_idx, hcs_labels = get_high_confidence_samples(pred_prob=pred_prob,
+                                                            delta=delta_0)
+            # get the original indices
+            hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
+
+            # remove the samples that already selected as uncertain samples.
+            hcs_idx = [x for x in hcs_idx if
+                    x not in list(set(uncert_samp_idx) & set(hcs_idx))]
+
+            # add high confidence samples to the labeled set 'dl'
+
+            # (1) update the indices
+            labeled_loader.sampler.indices.extend(hcs_idx)
+            # (2) update the original labels with the pseudo labels.
+            for idx in range(len(hcs_idx)):
+                labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
+
+            fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
-                    format(len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
+                    format(len(uncert_samp_idx), len(hcs_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
             fh.close()
 
@@ -264,8 +283,9 @@ def run(device, log_file, epochs, batch_size,
                  'List balacc: {}\n'
                  'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
         fh.close()
-        tot_acc = list(map(add, acc_list, tot_acc))
-        tot_balacc = list(map(add, balacc_list, tot_balacc))    
+        
+        tot_acc = [a + b for a, b in zip(tot_acc, acc_list)]
+        tot_balacc = [a + b for a, b in zip(tot_balacc, balacc_list)]
 
     return tot_acc, tot_balacc, fraction
 
@@ -345,19 +365,24 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["ms", "lc"]
+    criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
     k_samples = int(sys.argv[5])
-
+    delta_0 = 0.005
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    #run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k, model_name, size, num_channels)
+    tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
     #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
-
+    fh = open(log_file, 'a+')
+    fh.write('\n****\n')
+    fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
+    fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
+    fh.close()
+    '''
     for criteria in criterias:
-        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels)
+        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         fh = open(log_file, 'a+')
         fh.write('\n****\n')
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
         fh.close()
-
+    '''
