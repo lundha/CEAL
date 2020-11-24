@@ -34,3 +34,29 @@ def get_uncertain_samples(pred_prob: np.ndarray, k: int,
     else:
         raise ValueError('criteria {} not found !'.format(criteria))
     return uncertain_samples
+
+
+def get_high_confidence_samples(pred_prob: np.ndarray,
+                                delta: float) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Select high confidence samples from `D^U` whose entropy is smaller than
+     the threshold
+    `delta`.
+
+    Parameters
+    ----------
+    pred_prob : np.ndarray
+        prediction probability of x_i with dimension (batch x n_class)
+    delta : float
+        threshold
+
+    Returns
+    -------
+    np.array with dimension (K x 1)  containing the indices of the K
+        most informative samples.
+    np.array with dimension (K x 1) containing the predicted classes of the
+        k most informative samples
+    """
+    _, eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
+    hcs = eni[eni[:, 2] < delta]
+    return hcs[:, 0].astype(np.int32), hcs[:, 1].astype(np.int32)
