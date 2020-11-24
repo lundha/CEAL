@@ -329,7 +329,7 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
 if __name__ == "__main__":
 
     weight_decay = 0.0001
-    start_lr = 0.001
+    start_lr = 0.01
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"    
@@ -345,7 +345,7 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["rd", "lc"]
+    criterias = ["ms", "lc"]
     k_samples = int(sys.argv[5])
 
 
