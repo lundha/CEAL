@@ -57,6 +57,6 @@ def get_high_confidence_samples(pred_prob: np.ndarray,
     np.array with dimension (K x 1) containing the predicted classes of the
         k most informative samples
     """
-    _, eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
+    eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
     hcs = eni[eni[:, 2] < delta]
     return hcs[:, 0].astype(np.int32), hcs[:, 1].astype(np.int32)
