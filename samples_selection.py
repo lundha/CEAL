@@ -42,14 +42,12 @@ def get_high_confidence_samples(pred_prob: np.ndarray,
     Select high confidence samples from `D^U` whose entropy is smaller than
      the threshold
     `delta`.
-
     Parameters
     ----------
     pred_prob : np.ndarray
         prediction probability of x_i with dimension (batch x n_class)
     delta : float
         threshold
-
     Returns
     -------
     np.array with dimension (K x 1)  containing the indices of the K
@@ -57,6 +55,6 @@ def get_high_confidence_samples(pred_prob: np.ndarray,
     np.array with dimension (K x 1) containing the predicted classes of the
         k most informative samples
     """
-    eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
+    _, eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
     hcs = eni[eni[:, 2] < delta]
     return hcs[:, 0].astype(np.int32), hcs[:, 1].astype(np.int32)
