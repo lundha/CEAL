@@ -1,5 +1,7 @@
 
 from torch.utils.data import Dataset
+import torch 
+
 class my_subset(Dataset):
     r"""
     Subset of a dataset at specified indices.
