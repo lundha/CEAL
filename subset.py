@@ -14,8 +14,8 @@ class my_subset(Dataset):
     def __init__(self, dataset, indices,labels):
         self.dataset = dataset
         self.indices = indices
-        labels_hold = torch.ones(len(dataset)).type(torch.long) *300 #( some number not present in the #labels just to make sure
-        labels_hold[self.indices] = labels 
+       # labels_hold = torch.ones(len(dataset)).type(torch.long) *300 #( some number not present in the #labels just to make sure
+       # labels_hold[self.indices] = labels 
         self.labels = labels_hold
     def __getitem__(self, idx):
         image = self.dataset[self.indices[idx]][0]
