@@ -177,8 +177,8 @@ def run(device, log_file, epochs, batch_size,
                 test_labels.append(sample['label'])
                 
 
-        train_set = my_subset(dataset, train_index, )
-        test_set  = my_subset(dataset, test_index, )
+        train_set = my_subset(dataset, train_index, train_labels)
+        test_set  = my_subset(dataset, test_index, test_labels)
 
         #train_set, test_set = dataset[train_index], dataset[test_index]
         fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
