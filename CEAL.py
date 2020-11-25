@@ -138,6 +138,7 @@ def test(model, device, criterion, test_loader, log_file):
             total += target.size(0)
             correct += (predicted == target).sum().item()
     ceal_acc = 100 * correct / total
+    
     return accuracy, balanced_accuracy, ceal_acc
         
 def run(device, log_file, epochs, batch_size,
@@ -264,7 +265,7 @@ def run(device, log_file, epochs, batch_size,
 
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
-            
+            '''
             # get high confidence samples `dh`
             hcs_idx, hcs_labels = get_high_confidence_samples(pred_prob=pred_prob,
                                                             delta=delta_0)
@@ -282,7 +283,7 @@ def run(device, log_file, epochs, batch_size,
             # (2) update the original labels with the pseudo labels.
             for idx in range(len(hcs_idx)):
                 labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-            
+            '''
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
@@ -377,7 +378,7 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 10  # Add break when training loss stops decreasing 
+    epochs = 1  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
