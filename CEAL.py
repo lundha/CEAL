@@ -291,7 +291,7 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
-                    format(len(uncert_samp_idx), len(hcs_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
+                    format(len(uncert_samp_idx), len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
             fh.close()
 
