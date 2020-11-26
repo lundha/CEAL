@@ -210,9 +210,9 @@ def run(device, log_file, epochs, batch_size,
 
         flag = 0
         k = k_samples
-        fraction = [0]*10
-        acc_list = [0]*10
-        balacc_list = [0]*10
+        fraction = [0]
+        acc_list = [0]
+        balacc_list = [0]
         fh = open(log_file, 'a+')
 
         for iter in range(num_iter):
