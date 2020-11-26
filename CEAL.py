@@ -83,7 +83,7 @@ def train(model, device, labeled_loader, optimizer, criterion):
         loss = criterion(outputs, target.squeeze(1).long())
         
         # Calculate gradients (backpropagation)
-        loss.backward()
+        loss.backward()x
         # Adjust parameters based on gradients
         optimizer.step()
         
@@ -239,7 +239,7 @@ def run(device, log_file, epochs, batch_size,
             fh.write('Test acc:\t{:.3f}%\t'
                      'Test balacc:\t{:.3f}%\t'
                      'Test ceal-acc:\t{:.3f}%\t'
-                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), ceal_acc,
+                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), 0,
                             100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
 
             fraction.append(100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices)))
@@ -291,7 +291,7 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
-                    format(len(uncert_samp_idx), len(uncert_samp_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
+                    format(len(uncert_samp_idx), 0,len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
             fh.close()
 
@@ -378,13 +378,13 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 1  # Add break when training loss stops decreasing 
+    epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
     criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
     k_samples = int(sys.argv[5])
-    delta_0 = 0.005
+    delta_0 = 0.001
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
