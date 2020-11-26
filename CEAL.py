@@ -83,7 +83,7 @@ def train(model, device, labeled_loader, optimizer, criterion):
         loss = criterion(outputs, target.squeeze(1).long())
         
         # Calculate gradients (backpropagation)
-        loss.backward()x
+        loss.backward()
         # Adjust parameters based on gradients
         optimizer.step()
         
