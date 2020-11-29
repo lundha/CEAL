@@ -150,8 +150,8 @@ def run(device, log_file, epochs, batch_size,
     fh.write('INFO: Running on: {}, model name: {}, classes: {}, epochs: {}\n'
             'k: {}, criteria: {}, num iterations: {}, batch size: {}\n'.format(device, model_name, num_classes, epochs, k_samples, criteria, num_iter, batch_size))
     fh.close()
-    tot_acc = [0]*10
-    tot_balacc = [0]*10
+    tot_acc = [0]*40
+    tot_balacc = [0]*40
     
     criterion = nn.CrossEntropyLoss()
     iteration = 1
