@@ -41,7 +41,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from operator import add
 from subset import my_subset
 
-def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
+def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes):
     
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
@@ -50,7 +50,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending):
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
-                                    transform=composed)
+                                    transform=composed, num_classes=num_classes)
     except Exception as e:
         fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
