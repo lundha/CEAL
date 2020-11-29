@@ -368,7 +368,7 @@ if __name__ == "__main__":
     weight_decay = 0.0001
     start_lr = 0.001
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")   
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
@@ -382,19 +382,22 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
+    #criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
+    criterias = ["ms", "lc", "rd", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.001
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
-    tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
-    #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
-    fh = open(log_file, 'a+')
-    fh.write('\n****\n')
-    fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
-    fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
-    fh.close()
+    
+    for criteria in criterias:
+        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
+        fh = open(log_file, 'a+')
+        fh.write('\n****\n')
+        fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
+        fh.close()
     '''
     for criteria in criterias:
         tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
