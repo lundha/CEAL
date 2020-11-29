@@ -368,7 +368,7 @@ if __name__ == "__main__":
     weight_decay = 0.0001
     start_lr = 0.001
     # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")   
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
