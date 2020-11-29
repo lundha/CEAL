@@ -29,7 +29,8 @@ class PlanktonDataSet(Dataset):
                 csv_file='image_set.dat', 
                 header_file='header.tfl.txt',
                 transform = None,
-                file_ending = ".jpg"):
+                file_ending = ".jpg",
+                num_classes = 121):
     
         self.data_dir = data_dir
         self.header_file = header_file
@@ -37,7 +38,7 @@ class PlanktonDataSet(Dataset):
         self.transform = transform
         
         self.file_ending = file_ending
-        self._classes = 121
+        self._classes = num_classes
         self.load_data()
 
     def __len__(self):
@@ -51,9 +52,10 @@ class PlanktonDataSet(Dataset):
         image = io.imread(img_name)
         label = self.dataset.iloc[idx, 0].split(' ')[1]
         sample = {'image': image, 'label': label}
-
+        
         if self.transform:
             sample = self.transform(sample)
+        
         return sample
 
 
@@ -216,12 +218,22 @@ if __name__ == "__main__":
     filename = data_dir + "image_set.data"
     print(data_dir, header_file, filename)
 
-    composed = transforms.Compose([Resize(64), ToTensor(), Normalization()])
+    composed = transforms.Compose([Resize(64), ToTensor()])
     
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=".bmp",
                                     transform=composed)
     except Exception as e:
         print("Could not load dataset, error msg: ", str(e))
-    print(dataset.dataset.head())
-    print(len(dataset))
+
+    train_index = [1,2,3]
+    test_index = [4,5,6]
+    test_labels = []
+    train_labels = []
+    for idx, sample in enumerate(dataset):
+        
+        if idx in train_index:
+            train_labels.append(sample['label'])
+        else:
+            test_labels.append(sample['label'])
+    print(train_labels)
