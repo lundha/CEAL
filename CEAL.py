@@ -388,7 +388,7 @@ if __name__ == "__main__":
     delta_0 = 0.001
 
 
-    dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending)
+    dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
         tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
