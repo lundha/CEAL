@@ -46,7 +46,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
 
-    composed = transforms.Compose([Convert2RGB(), Resize(64), Normalize(), ToTensor()])
+    composed = transforms.Compose([Convert2RGB(), Resize(227), Normalize(), ToTensor()])
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
@@ -191,7 +191,7 @@ def run(device, log_file, epochs, batch_size,
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         iteration += 1
         # Define labeled and unlabeled data sets
-        split = int(len(train_set) * 0.10) # 10% initial labeled data 
+        split = int(len(train_set) * 0.010) # 10% initial labeled data 
         indices = list(range(len(train_set)))
 
         unlabeled_indices, labeled_indices = indices[split:], indices[:split]
