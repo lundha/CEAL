@@ -1,7 +1,7 @@
 
 from typing import Optional, Callable
 
-from torchvision.models import alexnet, resnet152
+from torchvision.models import alexnet, resnet152, resnet18
 from torch.utils.data import DataLoader
 from torch.nn.functional import softmax
 import numpy as np
