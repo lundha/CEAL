@@ -11,7 +11,7 @@ class my_subset(Dataset):
         indices (sequence): Indices in the whole set selected for subset
         labels(sequence) : targets as required for the indices. will be the same length as indices
     """
-    def __init__(self, dataset, indices,labels):
+    def __init__(self, dataset, indices, labels):
         self.dataset = dataset
         self.indices = indices
        # labels_hold = torch.ones(len(dataset)).type(torch.long) *300 #( some number not present in the #labels just to make sure
