@@ -28,7 +28,7 @@ def get_uncertain_samples(pred_prob: np.ndarray, k: int,
     elif criteria == 'ms':
         uncertain_samples = margin_sampling(pred_prob=pred_prob, k=k)
     elif criteria == 'en':
-        uncertain_samples = entropy(pred_prob=pred_prob, k=k)
+        uncertain_samples, _ = entropy(pred_prob=pred_prob, k=k)
     elif criteria == 'rd':
         uncertain_samples = random_sampling(pred_prob=pred_prob, k=k)
     else:

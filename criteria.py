@@ -94,13 +94,11 @@ def entropy(pred_prob: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:
     f"""
     Rank all the unlabeled samples in an descending order according to
     the equation 4
-
     Parameters
     ----------
     pred_prob : np.ndarray
         prediction probability of x_i with dimension (batch x n_class)
     k : int
-
     Returns
     -------
     np.array with dimension (K x 1)  containing the indices of the K
@@ -110,7 +108,6 @@ def entropy(pred_prob: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:
         column 1: indices
         column 2: predicted class.
         column 3: entropy
-
     """
     # calculate the entropy for the pred_prob
     assert np.round(pred_prob.sum(1).sum()) == pred_prob.shape[

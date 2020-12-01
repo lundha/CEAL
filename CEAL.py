@@ -383,7 +383,7 @@ if __name__ == "__main__":
     batch_size = int(sys.argv[4])
     num_iter = 40
     #criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
-    criterias = ["ms", "lc", "rd", "en"]
+    criterias = ["en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.001
 
@@ -396,7 +396,7 @@ if __name__ == "__main__":
         fh = open(log_file, 'a+')
         fh.write('\n****\n')
         fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc]))
         fh.close()
     '''
     for criteria in criterias:
