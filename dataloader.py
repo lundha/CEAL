@@ -93,7 +93,7 @@ class PlanktonDataSet(Dataset):
         '''
         print('Get data from file ', os.path.join(self.data_dir, self.csv_file))
         self.dataset = pd.read_csv(os.path.join(self.data_dir, self.csv_file), header=None, delimiter=' ')
-        print(self.dataset.head())
+        #print(self.dataset.head())
 
 
     def get_classes_from_directory(self):
@@ -216,9 +216,8 @@ if __name__ == "__main__":
     data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    print(data_dir, header_file, filename)
 
-    composed = transforms.Compose([Resize(64), ToTensor()])
+    composed = transforms.Compose([Convert2RGB(), Resize(64), ToTensor()])
     
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=".bmp",
@@ -230,10 +229,7 @@ if __name__ == "__main__":
     test_index = [4,5,6]
     test_labels = []
     train_labels = []
-    for idx, sample in enumerate(dataset):
-        
-        if idx in train_index:
-            train_labels.append(sample['label'])
-        else:
-            test_labels.append(sample['label'])
-    print(train_labels)
+
+    print("*******")
+    for idx in train_index:
+        print(dataset.dataset.iloc[idx,0])

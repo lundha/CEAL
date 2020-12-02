@@ -40,14 +40,14 @@ def least_confidence(pred_prob: np.ndarray, k: int):
     # sort lc_i in ascending order
     lc_i = lc_i[lc_i[:, -1].argsort()]
 
-    return lc_i[:k, 0].astype(np.int32)
+    return lc_i[:k, 0].astype(np.int32), lc_i[:k, 2]
 
 def random_sampling(pred_prob: np.ndarray, k: int):
 
     size=len(pred_prob)
     rd_i = (list(range(size)))
 
-    return np.random.choice(rd_i[:], k, replace=False).astype(np.int32)
+    return np.random.choice(rd_i[:], k, replace=False).astype(np.int32), 0
 
 
 def margin_sampling(pred_prob: np.ndarray, k: int):
@@ -87,7 +87,7 @@ def margin_sampling(pred_prob: np.ndarray, k: int):
 
     # the smaller the margin  means the classifier is more
     # uncertain about the sample
-    return ms_i[:k, 0].astype(np.int32)
+    return ms_i[:k, 0].astype(np.int32), ms_i[:k, 2]
 
 
 def entropy(pred_prob: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:

@@ -17,14 +17,26 @@ class ResNet152(object):
     def __init__(self, n_classes, n_channels, device):
 
         self.n_classes = n_classes
-        self.model = resnet18(pretrained=True, progress=True)
+        self.model = resnet152(pretrained=True, progress=True)
         self.__change_last_layer()
         self.device = device
         print("The code is running on {}".format(self.device))
         
     def __change_last_layer(self) -> None:
-        self.model.fc = torch.nn.Linear(512, self.n_classes)
+        self.model.fc = torch.nn.Linear(2048, self.n_classes)
         
+class ResNet18(object):
+
+    def __init__(self, n_classes, n_channels, device):
+        self.n_classes = n_classes
+        self.model = resnet18(pretrained=True, progress=True)
+        self.__change_last_layer()
+        self.device = device
+        print("The code is running on {}".format(self.device))
+
+    def __change_last_layer(self) -> None:
+        self.model.fc = torch.nn.Linear(512, self.n_classes)
+
 
 class AlexNet(object):
 

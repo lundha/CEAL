@@ -24,16 +24,17 @@ def get_uncertain_samples(pred_prob: np.ndarray, k: int,
     tuple(np.ndarray, np.ndarray)
     """
     if criteria == 'lc':
-        uncertain_samples = least_confidence(pred_prob=pred_prob, k=k)
+        uncertain_samples, uncertain_prob = least_confidence(pred_prob=pred_prob, k=k)
     elif criteria == 'ms':
-        uncertain_samples = margin_sampling(pred_prob=pred_prob, k=k)
+        uncertain_samples, uncertain_prob  = margin_sampling(pred_prob=pred_prob, k=k)
     elif criteria == 'en':
-        uncertain_samples, _ = entropy(pred_prob=pred_prob, k=k)
+        uncertain_samples, en_i = entropy(pred_prob=pred_prob, k=k)
+        uncertain_prob = en_i[:,2]
     elif criteria == 'rd':
-        uncertain_samples = random_sampling(pred_prob=pred_prob, k=k)
+        uncertain_samples, uncertain_prob = random_sampling(pred_prob=pred_prob, k=k)
     else:
         raise ValueError('criteria {} not found !'.format(criteria))
-    return uncertain_samples
+    return uncertain_samples, uncertain_prob
 
 
 def get_high_confidence_samples(pred_prob: np.ndarray,
@@ -57,4 +58,4 @@ def get_high_confidence_samples(pred_prob: np.ndarray,
     """
     _, eni = entropy(pred_prob=pred_prob, k=len(pred_prob))
     hcs = eni[eni[:, 2] < delta]
-    return hcs[:, 0].astype(np.int32), hcs[:, 1].astype(np.int32)
+    return hcs[:, 0].astype(np.int32), hcs[:, 1].astype(np.int32), hcs[:, 2]

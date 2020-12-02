@@ -32,7 +32,7 @@ import torch
 from torch import nn
 from torch import optim
 from dataloader import PlanktonDataSet, Resize, Normalize, ToTensor, Convert2RGB
-from nn_models import AlexNet, ResNet152
+from nn_models import AlexNet, ResNet152, ResNet18
 from samples_selection import get_uncertain_samples, get_high_confidence_samples
 from criteria import least_confidence
 import sys
@@ -65,6 +65,9 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
         net = AlexNet(num_classes, device)
     if model_name == "resnet152":
         net = ResNet152(num_classes, num_channels, device)
+    if model_name == "resnet18":
+        net = ResNet18(num_classes, num_channels, device)
+
     return net.model    
 
 
@@ -258,20 +261,24 @@ def run(device, log_file, epochs, batch_size,
                 flag = 1
 
             # get k uncertain samples
-            uncert_samp_idx = get_uncertain_samples(pred_prob=pred_prob, k=k,
+            uncert_samp_idx, uncert_prob = get_uncertain_samples(pred_prob=pred_prob, k=k,
                                                         criteria=criteria)
             # get original indices
             uncert_samp_idx = [unlabeled_loader.sampler.indices[idx] for idx in uncert_samp_idx]
 
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
-            '''
+            
             # get high confidence samples `dh`
-            hcs_idx, hcs_labels = get_high_confidence_samples(pred_prob=pred_prob,
+            hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
                                                             delta=delta_0)
             # get the original indices
             hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
 
+            fh.write('** Low confidence sampled image: {} , confidence: {} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
+            fh.write('** High confidence sampled image: {}, confidence: {} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+
+            '''
             # remove the samples that already selected as uncertain samples.
             hcs_idx = [x for x in hcs_idx if
                     x not in list(set(uncert_samp_idx) & set(hcs_idx))]
@@ -331,7 +338,6 @@ def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, wei
         fh.write('len(train): {}, len(test): {}\n'.format(len(train_set), len(test_set)))
 
         iteration += 1
-        # Define test data
         test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
         train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
@@ -367,7 +373,6 @@ if __name__ == "__main__":
 
     weight_decay = 0.0001
     start_lr = 0.001
-    # data_dir = "/Users/martin.lund.haug/Documents/Prosjektoppgave/Datasets/plankton_new_data/Dataset_BeringSea/train/"
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"    
     header_file = data_dir + "header.tfl.txt"
@@ -382,7 +387,6 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    #criteria = sys.argv[7] #["ms", "lc", "rd", "en"]
     criterias = ["ms", "lc", "rd", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.001
@@ -398,11 +402,5 @@ if __name__ == "__main__":
         fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc]))
         fh.close()
-    '''
-    for criteria in criterias:
-        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
-        fh = open(log_file, 'a+')
-        fh.write('\n****\n')
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/len(fraction) for x in tot_acc],  [x/len(fraction) for x in tot_balacc]))
-        fh.close()
-    '''
+    
+
