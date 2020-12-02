@@ -279,7 +279,7 @@ def run(device, log_file, epochs, batch_size,
             for row in pred_prob:
                 print(row)
                 fh.write('** row: {}'.format(row))
-            fh.write('** Pred probs: {}'.format(pred_prob))
+            #fh.write('** Pred probs: {}'.format(pred_prob))
 
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
@@ -405,7 +405,7 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 1  # Add break when training loss stops decreasing 
+    epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
