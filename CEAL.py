@@ -274,13 +274,16 @@ def run(device, log_file, epochs, batch_size,
             # get original indices
             uncert_samp_idx = [unlabeled_loader.sampler.indices[idx] for idx in uncert_samp_idx]
             
+            
+            '''
             print(pred_prob.shape)
             print(pred_prob.dtype)
             for row in pred_prob:
                 print(row)
                 fh.write('** row: {}'.format(row))
-            #fh.write('** Pred probs: {}'.format(pred_prob))
-
+            fh.write('** Pred probs: {}'.format(pred_prob))
+            '''
+            
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
