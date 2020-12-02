@@ -146,7 +146,7 @@ def test(model, device, criterion, test_loader, log_file):
         
 def run(device, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0):
-
+    t00 = time.time()
 
     fh = open(log_file, 'a+')
     fh.write('\n**** New CEAL **** \n')
@@ -218,11 +218,17 @@ def run(device, log_file, epochs, batch_size,
         fraction = [0]
         acc_list = [0]
         balacc_list = [0]
+        hcs_idx = []
         fh = open(log_file, 'a+')
 
         for iter in range(num_iter):
             fh = open(log_file, 'a+')
             fh.write('\n** Active learning iteration: {} / {} **\n'.format(iter, num_iter))
+
+            # remove the high certain samples from the labeled pool after training
+            for val in hcs_idx:
+                labeled_loader.sampler.indices.remove(val)
+            fh.write('\n** Removed {} hcs from labeled samples'.format(len(hcs_idx)))
 
             # ---------- Train model ----------- #
             fh.write('***** TRAIN *****\n')
@@ -267,6 +273,13 @@ def run(device, log_file, epochs, batch_size,
                                                         criteria=criteria)
             # get original indices
             uncert_samp_idx = [unlabeled_loader.sampler.indices[idx] for idx in uncert_samp_idx]
+            
+            print(pred_prob.shape)
+            print(pred_prob.dtype)
+            for row in pred_prob:
+                print(row)
+                fh.write('** row: {}'.format(row))
+            fh.write('** Pred probs: {}'.format(pred_prob))
 
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
@@ -308,7 +321,6 @@ def run(device, log_file, epochs, batch_size,
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx), len(hcs_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
-
             fh.close()
 
         fh = open(log_file, 'a+')
@@ -320,7 +332,8 @@ def run(device, log_file, epochs, batch_size,
         tot_acc = [a + b for a, b in zip(tot_acc, acc_list)]
         tot_balacc = [a + b for a, b in zip(tot_balacc, balacc_list)]
 
-    return tot_acc, tot_balacc, fraction
+    t11 = time.time()
+    return tot_acc, tot_balacc, fraction, t11-t00
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -392,24 +405,25 @@ if __name__ == "__main__":
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
     size = 64
     num_channels = 3
-    epochs = 10  # Add break when training loss stops decreasing 
+    epochs = 1  # Add break when training loss stops decreasing 
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
     criterias = ["ms", "lc", "rd", "en"]
     k_samples = int(sys.argv[5])
-    delta_0 = 0.001
+    delta_0 = 0.0005
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
-        tot_acc, tot_balacc, fraction = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        tot_acc, tot_balacc, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
         fh = open(log_file, 'a+')
         fh.write('\n****\n')
         fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc]))
+        fh.write('Total time: {}\n'.format(tot_time))
         fh.close()
     
 
