@@ -47,7 +47,7 @@ def random_sampling(pred_prob: np.ndarray, k: int):
     size=len(pred_prob)
     rd_i = (list(range(size)))
 
-    return np.random.choice(rd_i[:], k, replace=False).astype(np.int32), 0
+    return np.random.choice(rd_i[:], k, replace=False).astype(np.int32), [0]
 
 
 def margin_sampling(pred_prob: np.ndarray, k: int):

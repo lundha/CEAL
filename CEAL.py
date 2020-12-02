@@ -155,12 +155,14 @@ def run(device, log_file, epochs, batch_size,
     fh.close()
     tot_acc = [0]*200
     tot_balacc = [0]*200
+    classCount = [0]*num_classes
     
     criterion = nn.CrossEntropyLoss()
     iteration = 1
     # KFold validation
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
-
+    
+    dataset_size = len(dataset)
     for train_index, test_index in kf.split(dataset):
         
         fh = open(log_file, 'a+')
@@ -243,9 +245,9 @@ def run(device, log_file, epochs, batch_size,
                      'Test balacc:\t{:.3f}%\t'
                      'Test ceal-acc:\t{:.3f}%\t'
                      'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), 0,
-                            100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices))))
+                            100*len(labeled_loader.sampler.indices)/dataset_size))
 
-            fraction.append(100*len(labeled_loader.sampler.indices)/(len(labeled_loader.sampler.indices)+len(unlabeled_loader.sampler.indices)))
+            fraction.append(100*len(labeled_loader.sampler.indices)/dataset_size)
             acc_list.append(test_acc*100/len(test_loader))
             balacc_list.append(test_balacc*100/len(test_loader))
 
@@ -275,10 +277,16 @@ def run(device, log_file, epochs, batch_size,
             # get the original indices
             hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
 
-            fh.write('** Low confidence sampled image: {} , confidence: {} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
-            fh.write('** High confidence sampled image: {}, confidence: {} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+            # Get classes for the uncertainty samples
+            for idx in uncert_samp_idx:
+                label = dataset.dataset.iloc[idx, 0].split(' ')[1]
+                classCount[int(label)] += 1
 
-            '''
+            fh.write('**** Class count: {} ****\n'.format(classCount))
+            fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
+            fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+
+            
             # remove the samples that already selected as uncertain samples.
             hcs_idx = [x for x in hcs_idx if
                     x not in list(set(uncert_samp_idx) & set(hcs_idx))]
@@ -290,7 +298,8 @@ def run(device, log_file, epochs, batch_size,
             # (2) update the original labels with the pseudo labels.
             for idx in range(len(hcs_idx)):
                 labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-            '''
+            
+
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
@@ -298,7 +307,7 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
-                    format(len(uncert_samp_idx), 0,len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
+                    format(len(uncert_samp_idx), len(hcs_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
 
             fh.close()
 

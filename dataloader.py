@@ -225,11 +225,12 @@ if __name__ == "__main__":
     except Exception as e:
         print("Could not load dataset, error msg: ", str(e))
 
-    train_index = [1,2,3]
-    test_index = [4,5,6]
-    test_labels = []
-    train_labels = []
+    uncert_samp_idx = [1,2,3,403,493,24,3454,23,354,2365,877,3436,879,9896,232,5,9]
+    classCount  = [0]*10
 
     print("*******")
-    for idx in train_index:
-        print(dataset.dataset.iloc[idx,0])
+    # Get classes for the uncertainty samples
+    for idx in uncert_samp_idx:
+        label = dataset.dataset.iloc[idx, 0].split(' ')[1]
+        classCount[int(label)] += 1
+    print(classCount)
