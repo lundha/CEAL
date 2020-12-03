@@ -225,10 +225,6 @@ def run(device, log_file, epochs, batch_size,
             fh = open(log_file, 'a+')
             fh.write('\n** Active learning iteration: {} / {} **\n'.format(iter, num_iter))
 
-            # remove the high certain samples from the labeled pool after training
-            for val in hcs_idx:
-                labeled_loader.sampler.indices.remove(val)
-            fh.write('\n** Removed {} hcs from labeled samples'.format(len(hcs_idx)))
 
             # ---------- Train model ----------- #
             fh.write('***** TRAIN *****\n')
@@ -239,6 +235,13 @@ def run(device, log_file, epochs, batch_size,
                 fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
+
+
+            # remove the high certain samples from the labeled pool after training
+            for val in hcs_idx:
+                labeled_loader.sampler.indices.remove(val)
+            fh.write('\n** Removed {} hcs from labeled samples'.format(len(hcs_idx)))
+
 
 
             # ------------ Test model ------------- #
@@ -283,7 +286,7 @@ def run(device, log_file, epochs, batch_size,
                 fh.write('** row: {}'.format(row))
             fh.write('** Pred probs: {}'.format(pred_prob))
             '''
-            
+
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
