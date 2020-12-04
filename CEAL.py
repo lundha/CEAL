@@ -46,10 +46,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
 
-    if file_ending == ".tiff":
-        composed = transforms.Compose([Convert2RGB(), Resize(224), ToTensor()])
-    else:
-        composed = transforms.Compose([Convert2RGB(), Resize(224), Normalize(), ToTensor()])
+    composed = transforms.Compose([Convert2RGB(), Resize(224), Normalize(), ToTensor()])
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
@@ -159,6 +156,7 @@ def run(device, log_file, epochs, batch_size,
     tot_balacc = [0]*200
     tot_uncert = [0]*200
     tot_precision = [0]*200
+    tot_train_time = [0]*200
     classCount = [0]*num_classes
     
     criterion = nn.CrossEntropyLoss()
@@ -223,6 +221,7 @@ def run(device, log_file, epochs, batch_size,
         acc_list = [0]
         balacc_list = [0]
         precision_list = [0]
+        train_time = []
         hcs_idx = []
         uncert_prob_list = []
         fh = open(log_file, 'a+')
@@ -234,6 +233,7 @@ def run(device, log_file, epochs, batch_size,
 
             # ---------- Train model ----------- #
             fh.write('***** TRAIN *****\n')
+            t0_train = time.time()
             for epoch in range(1, epochs+1):
                 t0 = time.time()
                 train_loss = \
@@ -241,8 +241,8 @@ def run(device, log_file, epochs, batch_size,
                 fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
-
-
+            t1_train = time.time()
+            train_time.append(t1_train-t0_train)
             # remove the high certain samples from the labeled pool after training
             for val in hcs_idx:
                 labeled_loader.sampler.indices.remove(val)
@@ -347,9 +347,10 @@ def run(device, log_file, epochs, batch_size,
         tot_balacc = [a + b for a, b in zip(tot_balacc, balacc_list)]
         tot_precision = [a + b for a, b in zip(tot_precision, precision_list)]
         tot_uncert = [a + b for a, b in zip(tot_uncert, uncert_prob_list)]
+        tot_train_time = [a + b for a,b in zip(tot_train_time, train_time)]
 
     t11 = time.time()
-    return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00
+    return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00, tot_train_time
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -434,13 +435,13 @@ if __name__ == "__main__":
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
-        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
         fh = open(result_file, 'a+')
         fh.write('\n**** RESULTS ****\n')
         fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
-        fh.write('Total time: {}\n'.format(tot_time))
+        fh.write('Total time: {}\n, Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
         fh.close()
     
 
