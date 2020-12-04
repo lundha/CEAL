@@ -46,7 +46,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
 
-    composed = transforms.Compose([Convert2RGB(), Resize(227), Normalize(), ToTensor()])
+    composed = transforms.Compose([Convert2RGB(), Resize(224), Normalize(), ToTensor()])
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
@@ -155,6 +155,7 @@ def run(device, log_file, epochs, batch_size,
     fh.close()
     tot_acc = [0]*200
     tot_balacc = [0]*200
+    tot_uncert = [0]*200
     classCount = [0]*num_classes
     
     criterion = nn.CrossEntropyLoss()
@@ -188,7 +189,7 @@ def run(device, log_file, epochs, batch_size,
         test_set  = my_subset(dataset, test_index, test_labels)
         
 
-
+        train_set_size = len(train_set)
         #train_set, test_set = dataset[train_index], dataset[test_index]
         fh.write('\nSplit up data, cross validation number: {}\n'.format(iteration))
         fh.write('len(train): {}, len(test): {}\n'.format(len(train_set), len(test_set)))
@@ -219,6 +220,7 @@ def run(device, log_file, epochs, batch_size,
         acc_list = [0]
         balacc_list = [0]
         hcs_idx = []
+        uncert_prob_list = []
         fh = open(log_file, 'a+')
 
         for iter in range(num_iter):
@@ -240,7 +242,7 @@ def run(device, log_file, epochs, batch_size,
             # remove the high certain samples from the labeled pool after training
             for val in hcs_idx:
                 labeled_loader.sampler.indices.remove(val)
-            fh.write('\n** Removed {} hcs from labeled samples'.format(len(hcs_idx)))
+            fh.write('\n** Removed {} hcs from labeled samples\n'.format(len(hcs_idx)))
 
 
 
@@ -304,7 +306,7 @@ def run(device, log_file, epochs, batch_size,
             fh.write('**** Class count: {} ****\n'.format(classCount))
             fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
             fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
-
+            uncert_prob_list.append(uncert_prob[0])
             
             # remove the samples that already selected as uncertain samples.
             hcs_idx = [x for x in hcs_idx if
@@ -332,14 +334,16 @@ def run(device, log_file, epochs, batch_size,
         fh = open(log_file, 'a+')
         fh.write('\nList acc: {}\n'
                  'List balacc: {}\n'
-                 'Fraction: {}\n'.format(acc_list, balacc_list, fraction))
+                 'Uncert list: {}\n'
+                 'Fraction: {}\n'.format(acc_list, balacc_list, uncert_prob_list,fraction))
         fh.close()
         
         tot_acc = [a + b for a, b in zip(tot_acc, acc_list)]
         tot_balacc = [a + b for a, b in zip(tot_balacc, balacc_list)]
+        tot_uncert = [a + b for a, b in zip(tot_uncert, uncert_prob_list)]
 
     t11 = time.time()
-    return tot_acc, tot_balacc, fraction, t11-t00
+    return tot_acc, tot_balacc, tot_uncert, fraction, t11-t00
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -406,6 +410,7 @@ if __name__ == "__main__":
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + sys.argv[6] + ".log"
+    result_file = data_dir + "result.log"
     file_ending = sys.argv[7]  #".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
@@ -423,12 +428,12 @@ if __name__ == "__main__":
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
-        tot_acc, tot_balacc, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        tot_acc, tot_balacc, tot_uncert, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
-        fh = open(log_file, 'a+')
-        fh.write('\n****\n')
-        fh.write('tot acc: {}, tot balacc: {}\n'.format(tot_acc, tot_balacc))
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc]))
+        fh = open(result_file, 'a+')
+        fh.write('\n**** RESULTS ****\n')
+        fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_uncert]))
         fh.write('Total time: {}\n'.format(tot_time))
         fh.close()
     
