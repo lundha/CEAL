@@ -51,7 +51,7 @@ class PlanktonDataSet(Dataset):
         img_name = self.dataset.iloc[idx, 0].split(' ')[0]
         if self.file_ending == ".tiff":
             image = Image.open(img_name)
-            image = numpy.array(image)
+            image = np.array(image)
         else:
             image = io.imread(img_name)
         label = self.dataset.iloc[idx, 0].split(' ')[1]
