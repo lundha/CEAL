@@ -46,7 +46,10 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
 
-    composed = transforms.Compose([Convert2RGB(), Resize(224), Normalize(), ToTensor()])
+    if file_ending == ".tiff":
+        composed = transforms.Compose([Convert2RGB(), Resize(224), ToTensor()])
+    else:
+        composed = transforms.Compose([Convert2RGB(), Resize(224), Normalize(), ToTensor()])
         
     try:
         dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file, csv_file=filename, file_ending=file_ending,
