@@ -196,6 +196,7 @@ class Normalize(object):
     def __call__(self, sample):
 
         img, label = sample['image'], sample['label']
+        print(img.shape)
         img = img - self.mean
         img /= self.std
         sample = {'image': img, 'label': label}
