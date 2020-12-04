@@ -157,6 +157,7 @@ def run(device, log_file, epochs, batch_size,
     tot_uncert = [0]*200
     tot_precision = [0]*200
     tot_train_time = [0]*200
+    tot_len_labeled_samples = [0]*200
     classCount = [0]*num_classes
     
     criterion = nn.CrossEntropyLoss()
@@ -224,6 +225,7 @@ def run(device, log_file, epochs, batch_size,
         train_time = []
         hcs_idx = []
         uncert_prob_list = []
+        len_labeled_samples = []
         fh = open(log_file, 'a+')
 
         for iter in range(num_iter):
@@ -330,7 +332,7 @@ def run(device, log_file, epochs, batch_size,
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
 
-
+            len_labeled_samples.append(len(labeled_loader.sampler.indices))
             fh.write('Update size of labeled and unlabeled dataset by adding {} uncertain samples and {} high certainty samples\n'
                     'updated len(labeled): {}\t updated len(unlabeled): {}\n'.
                     format(len(uncert_samp_idx), len(hcs_idx),len(labeled_loader.sampler.indices),len(unlabeled_loader.sampler.indices)))
@@ -348,9 +350,10 @@ def run(device, log_file, epochs, batch_size,
         tot_precision = [a + b for a, b in zip(tot_precision, precision_list)]
         tot_uncert = [a + b for a, b in zip(tot_uncert, uncert_prob_list)]
         tot_train_time = [a + b for a,b in zip(tot_train_time, train_time)]
+        tot_len_labeled_samples = [a + b for a,b in zip(tot_len_labeled_samples, len_labeled_samples)]
 
     t11 = time.time()
-    return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00, tot_train_time
+    return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00, tot_train_time, tot_len_labeled_samples
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -427,7 +430,7 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["ms", "lc", "rd", "en"]
+    criterias = ["lc", "rd", "ms", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.0005
 
@@ -435,13 +438,15 @@ if __name__ == "__main__":
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
-        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
         fh = open(result_file, 'a+')
         fh.write('\n**** RESULTS ****\n')
+        fh.write('Dataset: {} \n'.format(data_dir))
         fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
         fh.write('Total time: {}\n, Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
+        fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
         fh.close()
     
 
