@@ -49,8 +49,11 @@ class PlanktonDataSet(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         img_name = self.dataset.iloc[idx, 0].split(' ')[0]
-        #image = io.imread(img_name)
-        image = Image.open(img_name)
+        if self.file_ending == ".tiff":
+            image = Image.open(img_name)
+            image = numpy.array(image)
+        else:
+            image = io.imread(img_name)
         label = self.dataset.iloc[idx, 0].split(' ')[1]
         sample = {'image': image, 'label': label}
         
