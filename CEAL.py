@@ -32,7 +32,7 @@ import torch
 from torch import nn
 from torch import optim
 from dataloader import PlanktonDataSet, Resize, Normalize, ToTensor, Convert2RGB
-from nn_models import AlexNet, ResNet152, ResNet18
+from nn_models import AlexNet, ResNet152, ResNet18, ResNet34
 from samples_selection import get_uncertain_samples, get_high_confidence_samples
 from criteria import least_confidence
 import sys
@@ -67,6 +67,8 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
         net = ResNet152(num_classes, num_channels, device)
     if model_name == "resnet18":
         net = ResNet18(num_classes, num_channels, device)
+    if model_name == "resnet34":
+        net = ResNet34(num_classes, num_channels, device)
 
     return net.model    
 
@@ -102,7 +104,7 @@ def predict(model, device, unlabeled_loader, num_classes):
     model.eval()
     model.to(device)
     predict_results = np.empty(shape=(0, num_classes))
-    with torch.no_grad(): # Check out what this does
+    with torch.no_grad(): 
         for sample in unlabeled_loader:
             data = sample['image']
             data = data.to(device)
@@ -122,6 +124,7 @@ def test(model, device, criterion, test_loader, log_file):
     correct = 0
     accuracy = 0
     balanced_accuracy = 0
+    precision = 0
     ceal_acc = 0
   
     with torch.no_grad():
@@ -132,17 +135,13 @@ def test(model, device, criterion, test_loader, log_file):
             loss = criterion(outputs, target.squeeze(1).long())
             test_loss += loss.item() * data.size(0)
             
-            acc, bacc, precision, recall, f1_score, rep = \
+            acc, bacc, prec, recall, f1_score, rep = \
                 METRIX(target.squeeze(1).long(), outputs)
             accuracy += acc
             balanced_accuracy += bacc
-            
-            _, predicted = torch.max(outputs.data, 1)
-            total += target.size(0)
-            correct += (predicted == target).sum().item()
-    ceal_acc = 100 * correct / total
-    
-    return accuracy, balanced_accuracy, ceal_acc
+            precision += prec
+
+    return accuracy, balanced_accuracy, precision
         
 def run(device, log_file, epochs, batch_size,
         dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0):
@@ -156,6 +155,7 @@ def run(device, log_file, epochs, batch_size,
     tot_acc = [0]*200
     tot_balacc = [0]*200
     tot_uncert = [0]*200
+    tot_precision = [0]*200
     classCount = [0]*num_classes
     
     criterion = nn.CrossEntropyLoss()
@@ -219,6 +219,7 @@ def run(device, log_file, epochs, batch_size,
         fraction = [0]
         acc_list = [0]
         balacc_list = [0]
+        precision_list = [0]
         hcs_idx = []
         uncert_prob_list = []
         fh = open(log_file, 'a+')
@@ -249,18 +250,19 @@ def run(device, log_file, epochs, batch_size,
             # ------------ Test model ------------- #
             fh.write('******* TEST *******\n')
             t0 = time.time()
-            test_acc, test_balacc, ceal_acc = test(net, device, criterion, test_loader, log_file)
+            test_acc, test_balacc, precision = test(net, device, criterion, test_loader, log_file)
             t1 = time.time()
             fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
                      'Test balacc:\t{:.3f}%\t'
-                     'Test ceal-acc:\t{:.3f}%\t'
-                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), 0,
-                            100*len(labeled_loader.sampler.indices)/dataset_size))
+                     'Test precision:\t{:.3f}%\t'
+                     'Fraction data: {:.3f}%\n'.format(test_acc*100/len(test_loader), test_balacc*100/len(test_loader), precision*100/len(test_loader),
+                            100*len(labeled_loader.sampler.indices)/train_set_size))
 
-            fraction.append(100*len(labeled_loader.sampler.indices)/dataset_size)
+            fraction.append(100*len(labeled_loader.sampler.indices)/train_set_size)
             acc_list.append(test_acc*100/len(test_loader))
             balacc_list.append(test_balacc*100/len(test_loader))
+            precision_list.append(precision*100/len(test_loader))
 
             if flag == 1:
                 break
@@ -340,10 +342,11 @@ def run(device, log_file, epochs, batch_size,
         
         tot_acc = [a + b for a, b in zip(tot_acc, acc_list)]
         tot_balacc = [a + b for a, b in zip(tot_balacc, balacc_list)]
+        tot_precision = [a + b for a, b in zip(tot_precision, precision_list)]
         tot_uncert = [a + b for a, b in zip(tot_uncert, uncert_prob_list)]
 
     t11 = time.time()
-    return tot_acc, tot_balacc, tot_uncert, fraction, t11-t00
+    return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -428,12 +431,12 @@ if __name__ == "__main__":
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for criteria in criterias:
-        tot_acc, tot_balacc, tot_uncert, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
+        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
         fh = open(result_file, 'a+')
         fh.write('\n**** RESULTS ****\n')
         fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_uncert]))
+        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
         fh.write('Total time: {}\n'.format(tot_time))
         fh.close()
     
