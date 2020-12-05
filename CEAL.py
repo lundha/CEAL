@@ -296,7 +296,7 @@ def run(device, log_file, epochs, batch_size,
             
             # get high confidence samples `dh`
            # hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
-                                                            delta=delta_0)
+            #                                                delta=delta_0)
             # get the original indices
            # hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
