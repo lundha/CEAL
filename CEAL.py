@@ -295,10 +295,10 @@ def run(device, log_file, epochs, batch_size,
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
             # get high confidence samples `dh`
-            hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
+           # hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
                                                             delta=delta_0)
             # get the original indices
-            hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
+           # hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
             # Get classes for the uncertainty samples
             for idx in uncert_samp_idx:
@@ -307,7 +307,7 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
             fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
-            fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+           #fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
             uncert_prob_list.append(uncert_prob[0])
             
             '''
@@ -415,7 +415,7 @@ if __name__ == "__main__":
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + sys.argv[6] + ".log"
-    result_file = data_dir + "result.log"
+    result_file = data_dir + sys.argv[8] + ".log"
     file_ending = sys.argv[7]  #".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
@@ -425,7 +425,7 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["lc", "rd", "ms", "en"]
+    criterias = ["rd", "cl", "ms", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.0005
 
