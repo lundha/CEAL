@@ -415,7 +415,7 @@ if __name__ == "__main__":
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + sys.argv[6] + ".log"
-    result_file = data_dir + sys.argv[8] + ".log"
+    result_file = data_dir + "result.log"
     file_ending = sys.argv[7]  #".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
@@ -425,10 +425,10 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["rd", "cl", "ms", "en"]
+    criterias = ["cl", "ms", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.0005
-    note = sys.argv[9]
+    note = sys.argv[8]
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
