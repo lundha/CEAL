@@ -415,7 +415,7 @@ if __name__ == "__main__":
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
     log_file = data_dir + sys.argv[6] + ".log"
-    result_file = data_dir + "result.log"
+    result_file = data_dir + "RESULT.log"
     file_ending = sys.argv[7]  #".jpg"
     model_name = sys.argv[2]
     num_classes = int(sys.argv[3]) #7 # DYNAMIC
