@@ -44,16 +44,10 @@ def least_confidence(pred_prob: np.ndarray, k: int):
 
 def random_sampling(pred_prob: np.ndarray, k: int):
 
-    most_pred_prob = np.max(pred_prob, axis=1)
     size=len(pred_prob)
-    rd_i = (list(range(size)), most_pred_prob)
-
-    sample = np.random.choice(rd_i[0], k, replace=False)
-    rnd_array = []
-    for idx in sample:
-        rnd_array.append(rd_i[idx])
-
-    return rnd_array[0], rnd_array[1]
+    rd_i = list(range(size))
+   
+    return np.random.choice(rd_i, k, replace=False).astype(np.int32), [0]
 
 
 def margin_sampling(pred_prob: np.ndarray, k: int):
