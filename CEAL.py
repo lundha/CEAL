@@ -428,6 +428,7 @@ if __name__ == "__main__":
     criterias = ["rd", "cl", "ms", "en"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.0005
+    note = sys.argv[9]
 
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
@@ -437,6 +438,7 @@ if __name__ == "__main__":
         #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
         fh = open(result_file, 'a+')
         fh.write('\n**** RESULTS ****\n')
+        fh.write('Note: {}\n'.format(note))
         fh.write('Dataset: {} \n'.format(data_dir))
         fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
         fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
