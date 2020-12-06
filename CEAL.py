@@ -247,12 +247,12 @@ def run(device, log_file, epochs, batch_size,
             t1_train = time.time()
             train_time.append(t1_train-t0_train)
 
-            
+            '''
             # remove the high certain samples from the labeled pool after training
             for val in hcs_idx:
                 labeled_loader.sampler.indices.remove(val)
             fh.write('\n** Removed {} hcs from labeled samples\n'.format(len(hcs_idx)))
-            
+            '''
 
 
             # ------------ Test model ------------- #
@@ -295,10 +295,10 @@ def run(device, log_file, epochs, batch_size,
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
             # get high confidence samples `dh`
-            hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
-                                                            delta=delta_0)
+           # hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
+            #                                                delta=delta_0)
             # get the original indices
-            hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
+           # hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
             # Get classes for the uncertainty samples
             for idx in uncert_samp_idx:
@@ -307,10 +307,10 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
             fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
-            fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+           #fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
             uncert_prob_list.append(uncert_prob[0])
             
-            
+            '''
             # remove the samples that already selected as uncertain samples.
             hcs_idx = [x for x in hcs_idx if
                     x not in list(set(uncert_samp_idx) & set(hcs_idx))]
@@ -322,7 +322,7 @@ def run(device, log_file, epochs, batch_size,
             # (2) update the original labels with the pseudo labels.
             for idx in range(len(hcs_idx)):
                 labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-            
+            '''
 
             # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
