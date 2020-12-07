@@ -425,7 +425,7 @@ if __name__ == "__main__":
     bench_epochs = 20
     batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["rd", "cl", "ms", "en"]
+    criterias = ["cl", "en", "ms"]
     k_samples = int(sys.argv[5])
     delta_0 = 0.0005
     note = sys.argv[8]

@@ -23,7 +23,7 @@ def get_uncertain_samples(pred_prob: np.ndarray, k: int,
     -------
     tuple(np.ndarray, np.ndarray)
     """
-    if criteria == 'lc':
+    if criteria == 'cl':
         uncertain_samples, uncertain_prob = least_confidence(pred_prob=pred_prob, k=k)
     elif criteria == 'ms':
         uncertain_samples, uncertain_prob  = margin_sampling(pred_prob=pred_prob, k=k)
