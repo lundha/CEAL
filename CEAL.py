@@ -142,9 +142,10 @@ def test(model, device, criterion, test_loader, log_file):
             precision += prec
 
     return accuracy, balanced_accuracy, precision
-        
+
+
 def run(device, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal):
     t00 = time.time()
 
     fh = open(log_file, 'a+')
@@ -247,11 +248,11 @@ def run(device, log_file, epochs, batch_size,
             t1_train = time.time()
             train_time.append(t1_train-t0_train)
 
-            
-            # remove the high certain samples from the labeled pool after training
-            for val in hcs_idx:
-                labeled_loader.sampler.indices.remove(val)
-            fh.write('\n** Removed {} hcs from labeled samples\n'.format(len(hcs_idx)))
+            if bool_ceal == True:
+                # remove the high certain samples from the labeled pool after training
+                for val in hcs_idx:
+                    labeled_loader.sampler.indices.remove(val)
+                fh.write('\n** Removed {} hcs from labeled samples\n'.format(len(hcs_idx)))
             
 
 
@@ -294,11 +295,12 @@ def run(device, log_file, epochs, batch_size,
             # add uncertain samples to labeled dataset
             labeled_loader.sampler.indices.extend(uncert_samp_idx)
             
-            # get high confidence samples `dh`
-            hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
-                                                            delta=delta_0)
-            # get the original indices
-            hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
+            if bool_ceal == True:
+                # get high confidence samples `dh`
+                hcs_idx, hcs_labels, hcs_prob = get_high_confidence_samples(pred_prob=pred_prob,
+                                                                delta=delta_0)
+                # get the original indices
+                hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
             # Get classes for the uncertainty samples
             for idx in uncert_samp_idx:
@@ -307,24 +309,25 @@ def run(device, log_file, epochs, batch_size,
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
             fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
-            fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+
+            if bool_ceal == True:
+                fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
             uncert_prob_list.append(uncert_prob[0])
             
-            
-            # remove the samples that already selected as uncertain samples.
-            hcs_idx = [x for x in hcs_idx if
-                    x not in list(set(uncert_samp_idx) & set(hcs_idx))]
+            if bool_ceal == True:
+                # remove the samples that already selected as uncertain samples.
+                hcs_idx = [x for x in hcs_idx if
+                        x not in list(set(uncert_samp_idx) & set(hcs_idx))]
 
-            # add high confidence samples to the labeled set 'dl'
+                # add high confidence samples to the labeled set 'dl'
+                # (1) update the indices
+                labeled_loader.sampler.indices.extend(hcs_idx)
+                # (2) update the original labels with the pseudo labels.
+                for idx in range(len(hcs_idx)):
+                    labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
+                
 
-            # (1) update the indices
-            labeled_loader.sampler.indices.extend(hcs_idx)
-            # (2) update the original labels with the pseudo labels.
-            for idx in range(len(hcs_idx)):
-                labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-            
-
-            # remove the uncertain samples from the unlabeled pool
+                # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
                 unlabeled_loader.sampler.indices.remove(val)
 
@@ -411,39 +414,46 @@ if __name__ == "__main__":
     weight_decay = 0.0001
     start_lr = 0.001
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")   
-    data_dir = sys.argv[1]+"/"    
+    data_dir = sys.argv[1]+"/"   
+    num_classes = int(sys.argv[2]) #7 # DYNAMIC
+    batch_size = int(sys.argv[3])
+    k_samples = int(sys.argv[4])
+    log_file = data_dir + sys.argv[5] + ".log"
+    file_ending = sys.argv[6]  #".jpg"
+
+    model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    log_file = data_dir + sys.argv[6] + ".log"
-    result_file = data_dir + "RESULT.log"
-    file_ending = sys.argv[7]  #".jpg"
-    model_name = sys.argv[2]
-    num_classes = int(sys.argv[3]) #7 # DYNAMIC
+    result_file = data_dir + "FINAL-RESULT.log"
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
-    batch_size = int(sys.argv[4])
     num_iter = 40
-    criterias = ["cl", "en", "ms"]
-    k_samples = int(sys.argv[5])
+    criterias = ["rd", "cl", "en", "ms"]
     delta_0 = 0.0005
     note = sys.argv[8]
-
+    methods = ["al", "ceal"]
+    bool_ceal = False
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
-    for criteria in criterias:
-        tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0)
-        #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
-        fh = open(result_file, 'a+')
-        fh.write('\n**** RESULTS ****\n')
-        fh.write('Note: {}\n'.format(note))
-        fh.write('Dataset: {} \n'.format(data_dir))
-        fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
-        fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
-        fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
-        fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
-        fh.close()
-    
+    for method in methods:
+
+        if method == "ceal":
+            bool_ceal = True
+
+        for criteria in criterias:
+            tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal)
+            #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
+            fh = open(result_file, 'a+')
+            fh.write('\n**** RESULTS ****\n')
+            fh.write('Method: {}\n'.format(method))
+            fh.write('Dataset: {} \n'.format(data_dir))
+            fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
+            fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
+            fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
+            fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
+            fh.close()
+
 
