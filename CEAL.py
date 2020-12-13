@@ -432,7 +432,6 @@ if __name__ == "__main__":
     num_iter = 40
     criterias = ["rd", "cl", "en", "ms"]
     delta_0 = 0.0005
-    note = sys.argv[8]
     methods = ["al", "ceal"]
     bool_ceal = False
 
