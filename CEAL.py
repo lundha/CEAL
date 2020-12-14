@@ -253,7 +253,6 @@ def run(device, log_file, epochs, batch_size,
                 for val in hcs_idx:
                     labeled_loader.sampler.indices.remove(val)
                 fh.write('\n** Removed {} hcs from labeled samples\n'.format(len(hcs_idx)))
-            
 
 
             # ------------ Test model ------------- #
@@ -323,9 +322,13 @@ def run(device, log_file, epochs, batch_size,
                 # (1) update the indices
                 labeled_loader.sampler.indices.extend(hcs_idx)
                 # (2) update the original labels with the pseudo labels.
+                some_count = 0
                 for idx in range(len(hcs_idx)):
+                    if hcs_labels[idx] == labeled_loader.dataset.labels[hcs_idx[idx]]:
+                        some_count += 1
                     labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-                
+                fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
+
 
                 # remove the uncertain samples from the unlabeled pool
             for val in uncert_samp_idx:
@@ -413,7 +416,7 @@ if __name__ == "__main__":
 
     weight_decay = 0.0001
     start_lr = 0.001
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")   
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"   
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     batch_size = int(sys.argv[3])
@@ -424,7 +427,7 @@ if __name__ == "__main__":
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    result_file = data_dir + "FINAL-RESULT.log"
+    result_file = data_dir + "FINAL-RESULT-2.log"
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
@@ -433,7 +436,7 @@ if __name__ == "__main__":
     criterias = ["rd", "cl", "en", "ms"]
     delta_0 = 0.0005
     methods = ["al", "ceal"]
-    bool_ceal = False
+    bool_ceal = True
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
