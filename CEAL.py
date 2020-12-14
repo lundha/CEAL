@@ -327,7 +327,8 @@ def run(device, log_file, epochs, batch_size,
                     if hcs_labels[idx] == labeled_loader.dataset.labels[hcs_idx[idx]]:
                         some_count += 1
                     labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-                fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
+                if len(hcs_idx > 0):
+                    fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
 
 
                 # remove the uncertain samples from the unlabeled pool
