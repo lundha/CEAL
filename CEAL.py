@@ -200,12 +200,16 @@ def run(device, log_file, epochs, batch_size,
     
     criterion = nn.CrossEntropyLoss()
     iteration = 1
+    stop_flag = 0
     # KFold validation
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
     
     dataset_size = len(dataset)
     for train_index, test_index in kf.split(dataset):
         
+        if stop_flag = 1:
+            break
+
         fh = open(log_file, 'a+')
 
         net = load_model(model_name, num_classes, log_file, size, device, num_channels)
@@ -345,7 +349,7 @@ def run(device, log_file, epochs, batch_size,
                 # get the original indices
                 hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
-
+            '''
             if use_cifar == 1:
                 # Get classes for the uncertainty samples
                 for idx in uncert_samp_idx:
@@ -358,7 +362,7 @@ def run(device, log_file, epochs, batch_size,
                     classCount[int(label)] += 1
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
-            
+            '''
             uncert_prob_list.append(uncert_prob[0])
             
             if bool_ceal == True:
@@ -415,6 +419,7 @@ def run(device, log_file, epochs, batch_size,
         tot_uncert = [a + b for a, b in zip(tot_uncert, uncert_prob_list)]
         tot_train_time = [a + b for a,b in zip(tot_train_time, train_time)]
         tot_len_labeled_samples = [a + b for a,b in zip(tot_len_labeled_samples, len_labeled_samples)]
+        stop_flag = 1
 
     t11 = time.time()
     return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00, tot_train_time, tot_len_labeled_samples
@@ -492,13 +497,13 @@ if __name__ == "__main__":
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    result_file = data_dir + "FINAL-RESULT-3.log"
+    result_file = data_dir + "FINAL-RESULT-10.log"
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     num_iter = 40
-    criterias = ["cl", "en", "ms"]
+    criterias = ["en", "cl", "ms"]
     delta_0 = 0.0005
     methods = ["ceal", "al"]
     bool_ceal = False
@@ -510,6 +515,7 @@ if __name__ == "__main__":
     else:
         dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
         print("dont use cifar")
+
     for method in methods:
         bool_ceal = False
         if method == "ceal":
