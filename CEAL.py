@@ -428,7 +428,7 @@ if __name__ == "__main__":
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
     filename = data_dir + "image_set.data"
-    result_file = data_dir + "FINAL-RESULT-2.log"
+    result_file = data_dir + "FINAL-RESULT-3.log"
     size = 64
     num_channels = 3
     epochs = 10  # Add break when training loss stops decreasing 
