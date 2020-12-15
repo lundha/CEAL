@@ -449,7 +449,7 @@ if __name__ == "__main__":
     k_samples = int(sys.argv[4])
     log_file = data_dir + sys.argv[5] + ".log"
     file_ending = sys.argv[6]  #".jpg"
-    use_cifar = sys.argv[7]
+    use_cifar = int(sys.argv[7])
 
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
@@ -465,6 +465,7 @@ if __name__ == "__main__":
     methods = ["ceal", "al"]
     bool_ceal = False
     print(use_cifar)
+
     if use_cifar == 1:
         dataset = load_cifar(log_file)
         print("use cifar")
