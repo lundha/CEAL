@@ -467,9 +467,10 @@ if __name__ == "__main__":
 
     if use_cifar == 1:
         dataset = load_cifar(log_file)
+        print("use cifar")
     else:
         dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
-    
+        print("dont use cifar")
     for method in methods:
 
         if method == "ceal":
