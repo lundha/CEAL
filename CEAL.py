@@ -207,7 +207,7 @@ def run(device, log_file, epochs, batch_size,
     dataset_size = len(dataset)
     for train_index, test_index in kf.split(dataset):
         
-        if stop_flag = 1:
+        if stop_flag == 1:
             break
 
         fh = open(log_file, 'a+')
