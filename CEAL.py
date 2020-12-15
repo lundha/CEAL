@@ -93,7 +93,7 @@ def load_model(model_name, num_classes, log_file, size, device, num_channels):
     return net.model    
 
 
-def train(model, device, labeled_loader, optimizer, criterion):
+def train(model, device, labeled_loader, optimizer, criterion, use_cifar):
     train_loss = 0
     model.train()
     model.to(device)
@@ -101,7 +101,10 @@ def train(model, device, labeled_loader, optimizer, criterion):
                                 total=len(labeled_loader),
                                 leave=False):
         t0 = time.time()
-        input, target = sample['image'], sample['label']
+        if use_cifar == 1:
+            input, target = sample[0], sample[1]
+        else:
+            input, target = sample['image'], sample['label']
         input, target = input.to(device), target.to(device)
         optimizer.zero_grad()
         outputs = model(input.float())
@@ -119,14 +122,17 @@ def train(model, device, labeled_loader, optimizer, criterion):
 
 
 
-def predict(model, device, unlabeled_loader, num_classes):
+def predict(model, device, unlabeled_loader, num_classes, use_cifar):
 
     model.eval()
     model.to(device)
     predict_results = np.empty(shape=(0, num_classes))
     with torch.no_grad(): 
         for sample in unlabeled_loader:
-            data = sample['image']
+            if use_cifar == 1:
+                data = sample[0]
+            else:
+                data = sample['image']
             data = data.to(device)
             outputs = model(data.float())
             outputs = F.softmax(outputs)
@@ -135,7 +141,7 @@ def predict(model, device, unlabeled_loader, num_classes):
     return predict_results
 
 
-def test(model, device, criterion, test_loader, log_file):
+def test(model, device, criterion, test_loader, log_file, use_cifar):
     
     model.eval()
     model.to(device)
@@ -149,7 +155,10 @@ def test(model, device, criterion, test_loader, log_file):
   
     with torch.no_grad():
         for sample in test_loader:
-            data, target = sample['image'], sample['label']
+            if use_cifar == 1:
+                data, target = sample[0], sample[1]
+            else:
+                data, target = sample['image'], sample['label']
             data, target = data.to(device), target.to(device)
             outputs = model(data.float())
             loss = criterion(outputs, target.squeeze(1).long())
@@ -268,7 +277,7 @@ def run(device, log_file, epochs, batch_size,
             for epoch in range(1, epochs+1):
                 t0 = time.time()
                 train_loss = \
-                    train(net, device, labeled_loader, optimizer, criterion)
+                    train(net, device, labeled_loader, optimizer, criterion, use_cifar)
                 fh.write('\nTotal training time {:.2f} seconds\n'.format(time.time() - t0))
                 train_loss = train_loss / len(labeled_loader.dataset)
                 fh.write('Epoch:\t{}\tTraining Loss:\t{:.4f}\n'.format(epoch,train_loss))
@@ -285,7 +294,7 @@ def run(device, log_file, epochs, batch_size,
             # ------------ Test model ------------- #
             fh.write('******* TEST *******\n')
             t0 = time.time()
-            test_acc, test_balacc, precision = test(net, device, criterion, test_loader, log_file)
+            test_acc, test_balacc, precision = test(net, device, criterion, test_loader, log_file, use_cifar)
             t1 = time.time()
             fh.write('Testing time\t{:.3f} seconds\n'.format(t1-t0))
             fh.write('Test acc:\t{:.3f}%\t'
@@ -304,7 +313,7 @@ def run(device, log_file, epochs, batch_size,
 
             # ---------- Active learning ----- #
             fh.write('***** ACTIVE LEARNING *****\n')
-            pred_prob = predict(net, device, unlabeled_loader, num_classes)
+            pred_prob = predict(net, device, unlabeled_loader, num_classes, use_cifar)
             
             if len(pred_prob) < k:
                 k = len(pred_prob)
