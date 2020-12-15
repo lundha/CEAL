@@ -108,13 +108,10 @@ def train(model, device, labeled_loader, optimizer, criterion, use_cifar):
         input, target = input.to(device), target.to(device)
         optimizer.zero_grad()
         outputs = model(input.float())
-        print(input)
-        print(input.dtype)
-        print(input.shape)
-        print(target)
-        print(target.dtype)
-        print(target.shape)
-        loss = criterion(outputs, target.squeeze(1).long())
+        if use_cifar == 1:
+             loss = criterion(outputs, target.long())
+        else:
+            loss = criterion(outputs, target.squeeze(1).long())
         
         # Calculate gradients (backpropagation)
         loss.backward()
