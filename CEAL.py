@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 import glob
 from torch.utils.data import Dataset, DataLoader, random_split, Subset
 from torchvision import transforms, utils
+from torchvision.datasets import CIFAR10
 import torchvision.models as models
 import torch.nn.functional as F
 import cv2
@@ -59,6 +60,25 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
 
     return dataset
 
+def load_cifar():
+
+    fh = open(log_file, 'a+')
+    fh.write('\n***** Loading dataset *****\n')
+
+    composed = transforms_train = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+        
+    try:
+        dataset = CIFAR10(root='/home/martlh/cifar-10-batches-py', train=True, download=True, transform=composed)
+    except Exception as e:
+        fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
+        print("Could not load dataset, error msg: ", str(e))
+    fh.write('Len dataset: {}\n'.format(len(dataset)))
+    fh.close()
+
+    return dataset
 
 def load_model(model_name, num_classes, log_file, size, device, num_channels):
     if model_name == "alexnet":
@@ -145,7 +165,7 @@ def test(model, device, criterion, test_loader, log_file):
 
 
 def run(device, log_file, epochs, batch_size,
-        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal):
+        dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal, use_cifar):
     t00 = time.time()
 
     fh = open(log_file, 'a+')
@@ -182,11 +202,18 @@ def run(device, log_file, epochs, batch_size,
         train_labels = []
         test_labels = []
 
-        for idx, sample in enumerate(dataset):
-            if idx in train_index:
-                train_labels.append(sample['label'])
-            else:
-                test_labels.append(sample['label'])
+        if use_cifar == 1:
+            for idx, sample in enumerate(dataset):
+                if idx in train_index:
+                    train_labels.append(sample['target'])
+                else:
+                    test_labels.append(sample['target'])
+        else:
+            for idx, sample in enumerate(dataset):
+                if idx in train_index:
+                    train_labels.append(sample['label'])
+                else:
+                    test_labels.append(sample['label'])
 
         train_set = my_subset(dataset, train_index, train_labels)
         test_set  = my_subset(dataset, test_index, test_labels)
@@ -356,6 +383,7 @@ def run(device, log_file, epochs, batch_size,
 
     t11 = time.time()
     return tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, t11-t00, tot_train_time, tot_len_labeled_samples
+    
 
 def benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels):
 
@@ -424,6 +452,7 @@ if __name__ == "__main__":
     k_samples = int(sys.argv[4])
     log_file = data_dir + sys.argv[5] + ".log"
     file_ending = sys.argv[6]  #".jpg"
+    use_cifar = sys.argv[7]
 
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
@@ -434,12 +463,15 @@ if __name__ == "__main__":
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     num_iter = 40
-    criterias = ["cl", "en", "ms", "rd"]
+    criterias = ["cl", "en", "ms"]
     delta_0 = 0.0005
     methods = ["ceal", "al"]
-    bool_ceal = True
+    bool_ceal = False
 
-    dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
+    if use_cifar == 1:
+        dataset = load_cifar(log_file)
+    else:
+        dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
     
     for method in methods:
 
@@ -447,7 +479,7 @@ if __name__ == "__main__":
             bool_ceal = True
 
         for criteria in criterias:
-            tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal)
+            tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal, use_cifar)
             #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
             fh = open(result_file, 'a+')
             fh.write('\n**** RESULTS ****\n')
