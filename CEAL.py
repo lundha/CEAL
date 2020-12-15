@@ -464,7 +464,7 @@ if __name__ == "__main__":
     delta_0 = 0.0005
     methods = ["ceal", "al"]
     bool_ceal = False
-
+    print(use_cifar)
     if use_cifar == 1:
         dataset = load_cifar(log_file)
         print("use cifar")
