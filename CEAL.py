@@ -434,9 +434,9 @@ if __name__ == "__main__":
     epochs = 10  # Add break when training loss stops decreasing 
     bench_epochs = 20
     num_iter = 40
-    criterias = ["rd", "cl", "en", "ms"]
+    criterias = ["cl", "en", "ms", "rd"]
     delta_0 = 0.0005
-    methods = ["al", "ceal"]
+    methods = ["ceal", "al"]
     bool_ceal = True
 
     dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
