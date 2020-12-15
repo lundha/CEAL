@@ -334,10 +334,7 @@ def run(device, log_file, epochs, batch_size,
                 classCount[int(label)] += 1
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
-            fh.write('** Low confidence sampled image: {} , confidence: {:.3f} **\n'.format(dataset.dataset.iloc[uncert_samp_idx[0],0], uncert_prob[0]))
-
-            if bool_ceal == True:
-                fh.write('** High confidence sampled image: {}, confidence: {:.3f} **\n'.format(dataset.dataset.iloc[hcs_idx[0],0], hcs_prob[0]))
+            
             uncert_prob_list.append(uncert_prob[0])
             
             if bool_ceal == True:
