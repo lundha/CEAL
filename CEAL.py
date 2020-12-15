@@ -60,7 +60,7 @@ def load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_c
 
     return dataset
 
-def load_cifar():
+def load_cifar(log_file):
 
     fh = open(log_file, 'a+')
     fh.write('\n***** Loading dataset *****\n')
