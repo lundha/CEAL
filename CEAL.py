@@ -205,9 +205,9 @@ def run(device, log_file, epochs, batch_size,
         if use_cifar == 1:
             for idx, sample in enumerate(dataset):
                 if idx in train_index:
-                    train_labels.append(sample['target'])
+                    train_labels.append(sample[1])
                 else:
-                    test_labels.append(sample['target'])
+                    test_labels.append(sample[1])
         else:
             for idx, sample in enumerate(dataset):
                 if idx in train_index:
