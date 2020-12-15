@@ -345,10 +345,17 @@ def run(device, log_file, epochs, batch_size,
                 # get the original indices
                 hcs_idx = [unlabeled_loader.sampler.indices[idx] for idx in hcs_idx]
             
-            # Get classes for the uncertainty samples
-            for idx in uncert_samp_idx:
-                label = dataset.dataset.iloc[idx, 0].split(' ')[1]
-                classCount[int(label)] += 1
+
+            if use_cifar == 1:
+                # Get classes for the uncertainty samples
+                for idx in uncert_samp_idx:
+                    label = dataset.targets[idx]
+                    classCount[int(label)] += 1
+            else:
+                # Get classes for the uncertainty samples
+                for idx in uncert_samp_idx:
+                    label = dataset.dataset.iloc[idx, 0].split(' ')[1]
+                    classCount[int(label)] += 1
 
             fh.write('**** Class count: {} ****\n'.format(classCount))
             
@@ -359,17 +366,31 @@ def run(device, log_file, epochs, batch_size,
                 hcs_idx = [x for x in hcs_idx if
                         x not in list(set(uncert_samp_idx) & set(hcs_idx))]
 
-                # add high confidence samples to the labeled set 'dl'
-                # (1) update the indices
-                labeled_loader.sampler.indices.extend(hcs_idx)
-                # (2) update the original labels with the pseudo labels.
-                some_count = 0
-                for idx in range(len(hcs_idx)):
-                    if hcs_labels[idx] == labeled_loader.dataset.labels[hcs_idx[idx]]:
-                        some_count += 1
-                    labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
-                if len(hcs_idx) > 0:
-                    fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
+                if use_cifar == 1:
+                    # add high confidence samples to the labeled set 'dl'
+                    # (1) update the indices
+                    labeled_loader.sampler.indices.extend(hcs_idx)
+                    # (2) update the original labels with the pseudo labels.
+                    some_count = 0
+                    for idx in range(len(hcs_idx)):
+                        if hcs_labels[idx] == labeled_loader.data.targets[hcs_idx[idx]]:
+                            some_count += 1
+                        labeled_loader.data.targets[hcs_idx[idx]] = hcs_labels[idx]
+                    if len(hcs_idx) > 0:
+                        fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
+
+                else:
+                    # add high confidence samples to the labeled set 'dl'
+                    # (1) update the indices
+                    labeled_loader.sampler.indices.extend(hcs_idx)
+                    # (2) update the original labels with the pseudo labels.
+                    some_count = 0
+                    for idx in range(len(hcs_idx)):
+                        if hcs_labels[idx] == labeled_loader.dataset.labels[hcs_idx[idx]]:
+                            some_count += 1
+                        labeled_loader.dataset.labels[hcs_idx[idx]] = hcs_labels[idx]
+                    if len(hcs_idx) > 0:
+                        fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
 
 
                 # remove the uncertain samples from the unlabeled pool
