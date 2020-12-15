@@ -171,7 +171,10 @@ def test(model, device, criterion, test_loader, log_file, use_cifar):
             test_loss += loss.item() * data.size(0)
             
             acc, bacc, prec, recall, f1_score, rep = \
-                METRIX(target.squeeze(1).long(), outputs)
+                if use_cifar == 1:
+                    METRIX(target.long(), outputs)
+                else:
+                    METRIX(target.squeeze(1).long(), outputs)
             accuracy += acc
             balanced_accuracy += bacc
             precision += prec
