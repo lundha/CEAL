@@ -373,9 +373,9 @@ def run(device, log_file, epochs, batch_size,
                     # (2) update the original labels with the pseudo labels.
                     some_count = 0
                     for idx in range(len(hcs_idx)):
-                        if hcs_labels[idx] == labeled_loader.data.targets[hcs_idx[idx]]:
+                        if hcs_labels[idx] == labeled_loader.dataset.targets[hcs_idx[idx]]:
                             some_count += 1
-                        labeled_loader.data.targets[hcs_idx[idx]] = hcs_labels[idx]
+                        labeled_loader.dataset.targets[hcs_idx[idx]] = hcs_labels[idx]
                     if len(hcs_idx) > 0:
                         fh.write('hcs_labels: {}'.format(some_count/len(hcs_idx)))
 
