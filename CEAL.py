@@ -71,7 +71,7 @@ def load_cifar(log_file):
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
         
     try:
-        dataset = CIFAR10(root='/home/martlh/cifar-10-batches-py', train=True, download=True, transform=composed)
+        dataset = CIFAR10(root='/home/martlh/Documents/cifar10/cifar-10-batches-py', train=True, download=True, transform=composed)
     except Exception as e:
         fh.write('Could not load dataset, error msg: {}\n'.format(str(e)))
         print("Could not load dataset, error msg: ", str(e))
