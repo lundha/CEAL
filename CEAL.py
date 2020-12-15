@@ -164,7 +164,10 @@ def test(model, device, criterion, test_loader, log_file, use_cifar):
                 data, target = sample['image'], sample['label']
             data, target = data.to(device), target.to(device)
             outputs = model(data.float())
-            loss = criterion(outputs, target.squeeze(1).long())
+            if use_cifar == 1:
+                loss = criterion(outputs, target.long())
+            else:
+                loss = criterion(outputs, target.squeeze(1).long())
             test_loss += loss.item() * data.size(0)
             
             acc, bacc, prec, recall, f1_score, rep = \
