@@ -493,6 +493,8 @@ if __name__ == "__main__":
     log_file = data_dir + sys.argv[5] + ".log"
     file_ending = sys.argv[6]  #".jpg"
     use_cifar = int(sys.argv[7])
+    method = sys.argv[8] "ceal"/"al"
+    criteria = sys.argv[9]
 
     model_name = "resnet34"
     header_file = data_dir + "header.tfl.txt"
@@ -506,7 +508,6 @@ if __name__ == "__main__":
     criterias = ["en", "cl", "ms"]
     delta_0 = 0.0005
     methods = ["ceal", "al"]
-    bool_ceal = False
     print(use_cifar)
 
     if use_cifar == 1:
@@ -516,22 +517,20 @@ if __name__ == "__main__":
         dataset = load_data_pool(data_dir, header_file, filename, log_file, file_ending, num_classes)
         print("dont use cifar")
 
-    for method in methods:
-        bool_ceal = False
-        if method == "ceal":
-            bool_ceal = True
+    bool_ceal = False
+    if method == "ceal":
+        bool_ceal = True
 
-        for criteria in criterias:
-            tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal, use_cifar)
-            #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
-            fh = open(result_file, 'a+')
-            fh.write('\n**** RESULTS ****\n')
-            fh.write('Method: {}\n'.format(method))
-            fh.write('Dataset: {} \n'.format(data_dir))
-            fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
-            fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
-            fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
-            fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
-            fh.close()
+    tot_acc, tot_balacc, tot_precision, tot_uncert, fraction, tot_time, train_time, tot_len_labeled_samples = run(device, log_file, epochs, batch_size, dataset, num_iter, start_lr, weight_decay, num_classes, criteria, k_samples, model_name, size, num_channels, delta_0, bool_ceal, use_cifar)
+    #benchmark(device, log_file, bench_epochs, batch_size, dataset, start_lr, weight_decay, num_classes, model_name, size, num_channels)
+    fh = open(result_file, 'a+')
+    fh.write('\n**** RESULTS ****\n')
+    fh.write('Method: {}\n'.format(method))
+    fh.write('Dataset: {} \n'.format(data_dir))
+    fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
+    fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
+    fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
+    fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
+    fh.close()
 
 
