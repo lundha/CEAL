@@ -528,9 +528,10 @@ if __name__ == "__main__":
     fh.write('Method: {}\n'.format(method))
     fh.write('Dataset: {} \n'.format(data_dir))
     fh.write('batch size: {}, k_samples: {}, model name: {}, criteria: {}\n'.format(batch_size, k_samples, model_name, criteria))
-    fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
-    fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x/5 for x in train_time]))
-    fh.write('Avg len labeled samples: {}\n'.format([x/5 for x in tot_len_labeled_samples]))
+    #fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x/5 for x in tot_acc],  [x/5 for x in tot_balacc], [x/5 for x in tot_precision], [x/5 for x in tot_uncert]))
+    fh.write('criteria: {}\n avg acc: {}\n avg bacc: {}\n avg precision: {}\n avg uncert: {}\n'.format(criteria,  [x for x in tot_acc],  [x for x in tot_balacc], [x for x in tot_precision], [x for x in tot_uncert]))
+    fh.write('Total time: {}\n Avg train time: {}\n'.format(tot_time, [x for x in train_time]))
+    fh.write('Avg len labeled samples: {}\n'.format([x for x in tot_len_labeled_samples]))
     fh.close()
 
 
