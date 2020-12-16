@@ -485,7 +485,7 @@ if __name__ == "__main__":
 
     weight_decay = 0.0001
     start_lr = 0.001
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")   
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")   
     data_dir = sys.argv[1]+"/"   
     num_classes = int(sys.argv[2]) #7 # DYNAMIC
     batch_size = int(sys.argv[3])
